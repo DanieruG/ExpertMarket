@@ -76,7 +76,7 @@
 
 /* AI PAGE EXTENSIONS */
 .ai-grid-top {
-  align-items: stretch;
+  align-items: start;
   margin-bottom: 24px;
 }
 
@@ -96,9 +96,7 @@
   margin-top: 4px;
 }
 
-
-.ai-block-summary,
-.ai-block-analysis {
+.ai-block-summary {
   margin-bottom: 16px;
 }
 
@@ -129,8 +127,107 @@
   margin-top: 16px;
 }
 
-.ai-expert-row {
-  align-items: flex-start;
+.ai-results-stack-card {
+  margin-top: 16px;
+}
+
+.ai-expert-section-head {
+  margin: 18px 0 16px;
+}
+
+.ai-expert-grid {
+  gap: 20px;
+}
+
+.ai-expert-card-compact {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  transition: border-color 0.2s, transform 0.15s;
+  cursor: pointer;
+}
+
+.ai-expert-card-compact:hover {
+  border-color: #2a3050;
+  transform: translateY(-2px);
+}
+
+.ai-expert-card-head {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.ai-expert-card-head .expert-av {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  font-size: 16px;
+}
+
+.ai-expert-card-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+  margin-bottom: 3px;
+}
+
+.ai-expert-card-meta {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.ai-expert-badge-row {
+  margin-bottom: 10px;
+}
+
+.ai-expert-card-bio {
+  font-size: 12px;
+  color: #c0c8e0;
+  line-height: 1.55;
+  min-height: 56px;
+  margin-bottom: 12px;
+}
+
+.ai-expert-card-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.ai-expert-card-price {
+  font-family: 'DM Mono', monospace;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.ai-expert-card-match {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.ai-expert-card-match strong {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.ai-expert-card-footnote {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.ai-expert-card-btn {
+  width: 100%;
 }
 
 .ai-expert-note {
@@ -138,13 +235,6 @@
   color: var(--muted);
   margin-top: 6px;
   line-height: 1.5;
-}
-
-.ai-metrics-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 10px;
 }
 
 .ai-portfolio-line {
@@ -202,7 +292,8 @@
 @media(max-width: 900px) {
   .ai-grid-top,
   .ai-results-grid,
-  .ai-market-grid {
+  .ai-market-grid,
+  .ai-expert-grid {
     grid-template-columns: 1fr;
   }
 
@@ -210,10 +301,8 @@
     width: 260px;
     left: -20px;
   }
-}
 
-.ai-grid-top {
-  align-items: start;
-  margin-bottom: 24px;
+  .ai-expert-card-bio {
+    min-height: auto;
+  }
 }
-

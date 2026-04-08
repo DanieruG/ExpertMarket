@@ -14,7 +14,7 @@
   <div id="navbar-container"></div>
 
   <div class="main">
-  <div id="ticker-container"></div>
+    <div id="ticker-container"></div>
 
     <div class="page active" id="ai">
       <div class="topbar">
@@ -83,13 +83,15 @@
             </div>
           </div>
 
-          <button class="btn btn-primary ai-generate-btn" onclick="generateAIPicks()">
+          <button id="generateBtn" class="btn btn-primary ai-generate-btn" onclick="generateAIPicks()">
             Generate AI Picks
           </button>
 
           <p class="info-tip ai-input-note">
             Enter a user type, city, and at least one interest to unlock the AI recommendations.
           </p>
+
+          <p id="aiStatusMessage" class="info-tip ai-input-note" style="display:none;"></p>
         </div>
 
         <div class="ai-block">
@@ -98,7 +100,7 @@
             Get Started
           </div>
           <p class="ai-text">
-            Enter your details and interests to get personalised AI-driven expert recommendations tailored to your investing style and goals. 
+            Enter your details and interests to get personalised AI-driven expert recommendations tailored to your investing style and goals.
           </p>
 
           <div class="divider"></div>
@@ -115,38 +117,33 @@
         <div class="ai-block ai-block-summary">
           <div class="ai-label">
             <div class="ai-dot"></div>
-            In Simple Terms
+            AI Recommendation Summary
           </div>
-          <div id="plainEnglishText" class="ai-text"></div>
+          <div id="aiSummaryText" class="ai-text"></div>
         </div>
 
-        <div class="ai-block ai-block-analysis">
-          <div class="ai-label">
-            <div class="ai-dot"></div>
-            AI Analysis
+        <div class="section-header ai-expert-section-head">
+          <div class="section-title">Recommended Experts</div>
+        </div>
+        <div id="expertRecommendations" class="grid grid-3 ai-expert-grid"></div>
+
+        <div class="card ai-results-stack-card">
+          <div class="section-header">
+            <div class="section-title">AI Starter Portfolio</div>
+            <span class="badge badge-purple">Generated</span>
           </div>
-          <div id="aiAnalysisText" class="ai-text"></div>
+          <div id="starterPortfolio"></div>
         </div>
 
         <div class="grid grid-2 ai-results-grid">
           <div class="card">
             <div class="section-header">
-              <div class="section-title">Recommended Experts</div>
-              <span class="badge badge-green">Live Match</span>
+              <div class="section-title">Suggested Indices & Baskets</div>
+              <span class="badge badge-blue">AI Themes</span>
             </div>
-            <div id="expertRecommendations"></div>
+            <div id="suggestedIndices"></div>
           </div>
 
-          <div class="card">
-            <div class="section-header">
-              <div class="section-title">AI Starter Portfolio</div>
-              <span class="badge badge-purple">Generated</span>
-            </div>
-            <div id="starterPortfolio"></div>
-          </div>
-        </div>
-
-        <div class="grid grid-2 ai-results-grid">
           <div class="card">
             <div class="section-header">
               <div class="section-title">Suggested Diversification</div>
@@ -154,13 +151,23 @@
             </div>
             <div id="diversificationText" class="ai-text"></div>
           </div>
+        </div>
 
+        <div class="grid grid-2 ai-results-grid">
           <div class="card">
             <div class="section-header">
               <div class="section-title">Why These Picks?</div>
               <span class="badge badge-gold">Explainable AI</span>
             </div>
-            <div id="whyPicksText" class="ai-text"></div>
+            <div id="whyPicksText"></div>
+          </div>
+
+          <div class="card">
+            <div class="section-header">
+              <div class="section-title">Top Match Summary</div>
+              <span class="badge badge-red">Signal</span>
+            </div>
+            <div id="topMatchSummary" class="ai-text"></div>
           </div>
         </div>
 
