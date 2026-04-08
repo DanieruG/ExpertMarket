@@ -1,6 +1,6 @@
 async function loadPartial(containerId, filePath) {
   const container = document.getElementById(containerId);
-  if (!container) return;
+  if (!container) return false;
 
   try {
     const response = await fetch(filePath);
@@ -11,8 +11,10 @@ async function loadPartial(containerId, filePath) {
 
     const html = await response.text();
     container.innerHTML = html;
+    return true;
   } catch (error) {
     console.error(`Error loading ${filePath}:`, error);
+    return false;
   }
 }
 
@@ -38,11 +40,16 @@ function initTicker() {
 }
 
 async function initSharedLayout() {
-  await loadPartial('navbar-container', 'navbar.html');
-  await loadPartial('ticker-container', 'ticker.html');
+  const navbarLoaded = await loadPartial('navbar-container', 'navbar.html');
+  const tickerLoaded = await loadPartial('ticker-container', 'ticker.html');
 
-  highlightActiveNav();
-  initTicker();
+  if (navbarLoaded) {
+    highlightActiveNav();
+  }
+
+  if (tickerLoaded) {
+    initTicker();
+  }
 }
 
 document.addEventListener('DOMContentLoaded', initSharedLayout);

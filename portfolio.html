@@ -7,49 +7,9 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="portfolio">
-<nav class="sidebar">
-  <div class="sidebar-logo">
-    <div class="logo-text">EM</div>
-    <div class="logo-sub">ExpertMarket</div>
-  </div>
-  <div class="nav-section">
-    <a class="nav-item" href="expertmarket.html"><span>Home</span></a>
-    <a class="nav-item" href="dashboard.html"><span>Dashboard</span></a>
-  </div>
-  <div class="nav-section">
-    <div class="nav-label">Explore</div>
-    <a class="nav-item" href="profile.html"><span>Expert Profile</span></a>
-    <a class="nav-item" href="stock.html"><span>Restaurant Listings</span></a>
-    <a class="nav-item" href="category.html"><span>Categories</span></a>
-    <a class="nav-item" href="review.html"><span>Reviews</span></a>
-  </div>
-  <div class="nav-section">
-    <div class="nav-label">My Account</div>
-    <a class="nav-item" href="ai.html"><span>AI Picks</span></a>
-    <a class="nav-item" href="portfolio.html"><span>Portfolio</span></a>
-    <a class="nav-item" href="ipo.html"><span>Join as Expert</span></a>
-    <a class="nav-item" href="trust.html"><span>Trust and Safety</span></a>
-  </div>
-  <div class="sidebar-bottom">
-    <div class="user-pill">
-      <div class="avatar"></div>
-      <div>
-        <div class="user-name">Alex K.</div>
-        <div class="user-balance">£2,450</div>
-      </div>
-    </div>
-  </div>
-</nav>
+<div id="navbar-container"></div>
 <div class="main">
-<div class="ticker-wrap hidden" id="ticker">
-  <div class="ticker-inner">
-    <span class="tick-item"><span class="tick-name">YUKI.J</span> <span class="up">£142.50 ▲2.4%</span></span>
-    <span class="tick-item"><span class="tick-name">MARCO.F</span> <span class="up">£98.20 ▲1.1%</span></span>
-    <span class="tick-item"><span class="tick-name">CLAIRE.B</span> <span class="down">£67.80 ▼0.8%</span></span>
-    <span class="tick-item"><span class="tick-name">RAJAN.K</span> <span class="up">£211.00 ▲3.7%</span></span>
-    <span class="tick-item"><span class="tick-name">SOFIA.G</span> <span class="down">£55.40 ▼2.1%</span></span>
-  </div>
-</div>
+<div id="ticker-container"></div>
 <div class="page active" id="portfolio">
   <div class="topbar"><h1 class="page-title">My Portfolio</h1></div>
   <div class="portfolio-summary">
@@ -61,6 +21,7 @@
   </div>
 </div>
 </div>
+  <script src="navbar.js"></script>
 <script>
 (function initPage() {
   const id = document.body.dataset.page;

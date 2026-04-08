@@ -13,11 +13,6 @@ const pageFiles = {
 
 let expertDataCache = [];
 
-function showPage(id) {
-  const target = pageFiles[id];
-  if (target) window.location.href = target;
-}
-
 function togglePill(el) {
   el.classList.toggle('selected');
 }
@@ -34,7 +29,6 @@ function getSelectedInterests() {
 function setStatus(message, isError = false) {
   const statusEl = document.getElementById('aiStatusMessage');
   if (!statusEl) return;
-
   statusEl.style.display = message ? 'block' : 'none';
   statusEl.textContent = message || '';
   statusEl.style.color = isError ? '#ff7b7b' : '';
@@ -49,7 +43,6 @@ async function loadExperts() {
   }
 
   const data = await response.json();
-
   if (!Array.isArray(data)) {
     throw new Error('experts.json must contain an array of experts.');
   }
@@ -108,8 +101,7 @@ function calculateExpertMatch(expert, profile) {
   );
 
   if (interestMatches.length > 0) {
-    const interestScore = Math.min(36, interestMatches.length * 18);
-    score += interestScore;
+    score += Math.min(36, interestMatches.length * 18);
     reasons.push(`strong category overlap in ${interestMatches.join(', ')}`);
   }
 
@@ -143,9 +135,7 @@ function calculateExpertMatch(expert, profile) {
   return {
     ...expert,
     score,
-    matchReasons: reasons,
-    matchedInterestCount: interestMatches.length,
-    matchedInterests: interestMatches
+    matchReasons: reasons
   };
 }
 
@@ -189,7 +179,7 @@ function buildAISummary(profile, rankedExperts) {
   return `You are using the platform as ${article} ${userTypeLabel.toLowerCase()} in ${profile.city}, with a focus on ${profile.selectedPills.join(', ')}. The AI ranked experts using category overlap, city fit, experience fit, goal fit, and risk compatibility. Your strongest current match is ${topExpert.name} with a ${topExpert.score}% compatibility score for your goal of ${goalLabel}. ${aiTone}${goalTone} The current candidate pool has an average compatibility score of ${avgScore}%.`;
 }
 
-function truncateText(text, maxLength = 95) {
+function truncateText(text, maxLength = 110) {
   if (!text) return '';
   return text.length > maxLength ? `${text.slice(0, maxLength).trim()}…` : text;
 }
@@ -202,6 +192,7 @@ function openExpertProfile(expertId) {
   }
 
   localStorage.setItem('selectedExpert', JSON.stringify(expert));
+  localStorage.setItem('lastSeenExpertId', String(expert.id));
   window.location.href = `profile.html?expert=${expert.id}`;
 }
 
@@ -251,7 +242,7 @@ function renderExperts(rankedExperts, city) {
         </div>
 
         <div class="ai-expert-card-bio">
-          ${truncateText(expert.bio, 110)}
+          ${truncateText(expert.bio)}
         </div>
 
         <div class="ai-expert-card-price-row">
@@ -268,53 +259,215 @@ function renderExperts(rankedExperts, city) {
         </div>
 
         <button class="btn btn-primary btn-sm ai-expert-card-btn" onclick="event.stopPropagation(); openExpertProfile(${expert.id})">
-          ${expert.score >= 90 ? 'Invest' : 'View Profile'}
+          View Profile
         </button>
       </div>
     `)
     .join('');
 }
 
-function renderStarterPortfolio(userType) {
+function renderStarterPortfolio(profile, rankedExperts, suggestedIndices) {
   const starterPortfolio = document.getElementById('starterPortfolio');
-  let starterHtml = '';
+  const starterPortfolioIntro = document.getElementById('starterPortfolioIntro');
+  const starterPortfolioReason = document.getElementById('starterPortfolioReason');
 
-  if (userType === 'beginner') {
-    starterHtml = `
-      <div class="ai-portfolio-line"><span>Established Experts</span><span>50%</span></div>
-      <div class="progress-bar"><div class="progress-fill ai-fill-50"></div></div>
+  if (!starterPortfolio || !starterPortfolioIntro || !starterPortfolioReason) return;
 
-      <div class="ai-portfolio-line"><span>Emerging Experts</span><span>25%</span></div>
-      <div class="progress-bar"><div class="progress-fill ai-fill-25"></div></div>
-
-      <div class="ai-portfolio-line"><span>Sector Index Baskets</span><span>25%</span></div>
-      <div class="progress-bar"><div class="progress-fill ai-fill-25"></div></div>
-    `;
-  } else if (userType === 'trader') {
-    starterHtml = `
-      <div class="ai-portfolio-line"><span>High Conviction Positions</span><span>40%</span></div>
-      <div class="progress-bar"><div class="progress-fill ai-fill-40"></div></div>
-
-      <div class="ai-portfolio-line"><span>Momentum Picks</span><span>35%</span></div>
-      <div class="progress-bar"><div class="progress-fill ai-fill-35"></div></div>
-
-      <div class="ai-portfolio-line"><span>Thematic Baskets</span><span>25%</span></div>
-      <div class="progress-bar"><div class="progress-fill ai-fill-25"></div></div>
-    `;
-  } else {
-    starterHtml = `
-      <div class="ai-portfolio-line"><span>Category Leaders</span><span>45%</span></div>
-      <div class="progress-bar"><div class="progress-fill ai-fill-45"></div></div>
-
-      <div class="ai-portfolio-line"><span>Specialist Positions</span><span>35%</span></div>
-      <div class="progress-bar"><div class="progress-fill ai-fill-35"></div></div>
-
-      <div class="ai-portfolio-line"><span>Discovery / Optionality</span><span>20%</span></div>
-      <div class="progress-bar"><div class="progress-fill ai-fill-20"></div></div>
-    `;
+  if (!rankedExperts.length) {
+    starterPortfolioIntro.textContent = 'No starter allocation could be created because there were no strong expert matches.';
+    starterPortfolio.innerHTML = '';
+    starterPortfolioReason.innerHTML = '';
+    return;
   }
 
-  starterPortfolio.innerHTML = starterHtml;
+  const topExpert = rankedExperts[0];
+  const secondExpert = rankedExperts[1] || null;
+  const topIndex = suggestedIndices[0] || {
+    name: 'Balanced Expert Composite',
+    description: 'A broad basket combining credibility, momentum, and niche exposure.'
+  };
+
+  let allocationPlan = [];
+
+  if (profile.userType === 'beginner') {
+    if (profile.goal === 'steady' || profile.goal === 'longterm' || profile.goal === 'local') {
+      allocationPlan = [
+        {
+          label: topExpert.name,
+          percent: 40,
+          note: `Top match with ${topExpert.score}% compatibility and a ${topExpert.risk.toLowerCase()} to medium risk fit.`
+        },
+        {
+          label: topIndex.name,
+          percent: 35,
+          note: 'Adds broader diversification so the portfolio is not over-dependent on one expert.'
+        },
+        {
+          label: secondExpert ? secondExpert.name : 'Secondary Expert',
+          percent: 15,
+          note: secondExpert
+            ? 'Secondary position to reduce concentration while keeping relevance to your chosen interests.'
+            : 'Smaller second position to keep the allocation balanced.'
+        },
+        {
+          label: 'Reserve Cash',
+          percent: 10,
+          note: 'Keeps flexibility for future buys and reduces overcommitting too early.'
+        }
+      ];
+    } else {
+      allocationPlan = [
+        {
+          label: topExpert.name,
+          percent: 35,
+          note: 'Main starter position based on strongest AI compatibility.'
+        },
+        {
+          label: secondExpert ? secondExpert.name : topIndex.name,
+          percent: 25,
+          note: 'Adds another source of exposure without becoming too concentrated.'
+        },
+        {
+          label: topIndex.name,
+          percent: 25,
+          note: 'Helps diversify category and signal exposure.'
+        },
+        {
+          label: 'Reserve Cash',
+          percent: 15,
+          note: 'Leaves room for follow-up entries once more signals appear.'
+        }
+      ];
+    }
+  } else if (profile.userType === 'trader') {
+    if (profile.goal === 'momentum' || profile.goal === 'niche') {
+      allocationPlan = [
+        {
+          label: topExpert.name,
+          percent: 40,
+          note: 'Highest-conviction match with strong alignment to your more active strategy.'
+        },
+        {
+          label: secondExpert ? secondExpert.name : topIndex.name,
+          percent: 25,
+          note: secondExpert
+            ? 'Second expert position adds upside while spreading individual-expert risk.'
+            : 'Secondary thematic exposure for a broader opportunity set.'
+        },
+        {
+          label: topIndex.name,
+          percent: 20,
+          note: 'Maintains some diversification alongside your top expert picks.'
+        },
+        {
+          label: 'Reserve Cash',
+          percent: 15,
+          note: 'Useful for reacting quickly to new momentum signals.'
+        }
+      ];
+    } else {
+      allocationPlan = [
+        {
+          label: topExpert.name,
+          percent: 35,
+          note: 'Core position anchored around your strongest AI-ranked expert.'
+        },
+        {
+          label: topIndex.name,
+          percent: 30,
+          note: 'Provides a diversified layer under the core expert position.'
+        },
+        {
+          label: secondExpert ? secondExpert.name : 'Secondary Expert',
+          percent: 20,
+          note: secondExpert
+            ? 'Adds another expert with strong overlap to your chosen categories.'
+            : 'Adds a second smaller position to reduce single-name concentration.'
+        },
+        {
+          label: 'Reserve Cash',
+          percent: 15,
+          note: 'Preserves optionality while keeping the overall mix balanced.'
+        }
+      ];
+    }
+  } else {
+    if (profile.goal === 'niche' || profile.goal === 'momentum') {
+      allocationPlan = [
+        {
+          label: topExpert.name,
+          percent: 45,
+          note: 'Largest position goes to the strongest specialist match on the page.'
+        },
+        {
+          label: secondExpert ? secondExpert.name : topIndex.name,
+          percent: 25,
+          note: 'Supports the main idea with another high-relevance position.'
+        },
+        {
+          label: topIndex.name,
+          percent: 15,
+          note: 'Provides some diversification without diluting conviction too heavily.'
+        },
+        {
+          label: 'Reserve Cash',
+          percent: 15,
+          note: 'Keeps room for tactical adds or new opportunities.'
+        }
+      ];
+    } else {
+      allocationPlan = [
+        {
+          label: topExpert.name,
+          percent: 40,
+          note: 'Core high-conviction position based on strongest compatibility score.'
+        },
+        {
+          label: topIndex.name,
+          percent: 25,
+          note: 'Adds broader thematic balance to a more concentrated portfolio.'
+        },
+        {
+          label: secondExpert ? secondExpert.name : 'Secondary Expert',
+          percent: 20,
+          note: secondExpert
+            ? 'Complements the core position with another aligned expert.'
+            : 'Adds another smaller allocation to reduce reliance on one name.'
+        },
+        {
+          label: 'Reserve Cash',
+          percent: 15,
+          note: 'Preserves optionality and entry flexibility.'
+        }
+      ];
+    }
+  }
+
+  starterPortfolioIntro.textContent =
+    `This is a sample starter allocation based on your ${profile.userType} profile, your goal of ${getUserLabels(profile.userType, profile.goal).goalLabel}, and the risk profile of your top-matched recommendations above.`;
+
+  starterPortfolio.innerHTML = allocationPlan
+    .map(item => `
+      <div class="ai-allocation-item">
+        <div class="ai-portfolio-line">
+          <span>${item.label}</span>
+          <span>${item.percent}%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width:${item.percent}%"></div>
+        </div>
+        <div class="ai-allocation-note">${item.note}</div>
+      </div>
+    `)
+    .join('');
+
+  starterPortfolioReason.innerHTML = `
+    <div class="ai-why-list">
+      <div class="ai-why-item">The largest allocation goes to <strong>${topExpert.name}</strong> because they are the strongest match in your current recommendation set.</div>
+      <div class="ai-why-item">The allocation includes <strong>${topIndex.name}</strong> to reduce overexposure to a single expert while keeping category relevance.</div>
+      <div class="ai-why-item">A <strong>Reserve Cash</strong> allocation is included to keep flexibility for future signals, price moves, or additional expert entries.</div>
+    </div>
+  `;
 }
 
 function buildIndexSuggestions(profile, rankedExperts) {
@@ -332,7 +485,7 @@ function buildIndexSuggestions(profile, rankedExperts) {
   if (profile.selectedPills.includes('Street Food') || profile.goal === 'momentum') {
     indices.push({
       name: 'Urban Momentum Basket',
-      description: 'Higher-beta basket focused on fast-moving, culturally relevant food signals and discovery trends.',
+      description: 'Higher-beta basket focused on fast-moving food signals and discovery trends.',
       allocation: '25%'
     });
   }
@@ -348,7 +501,7 @@ function buildIndexSuggestions(profile, rankedExperts) {
   if (profile.selectedPills.includes('Fusion') || profile.goal === 'niche') {
     indices.push({
       name: 'Fusion Discovery Basket',
-      description: 'A niche-growth basket for cross-category experts with stronger upside and specialist relevance.',
+      description: 'A niche-growth basket for cross-category experts with stronger upside.',
       allocation: '20%'
     });
   }
@@ -369,9 +522,9 @@ function renderIndices(indices) {
 
   suggestedIndices.innerHTML = indices
     .map(index => `
-      <div class="ai-market-box" style="margin-bottom:14px;">
+      <div class="card" style="margin-bottom:14px;">
         <div class="card-title">${index.name}</div>
-        <div class="ai-market-text">${index.description}</div>
+        <div class="ai-text">${index.description}</div>
         <div class="ai-expert-note" style="margin-top:10px;">Suggested allocation: ${index.allocation}</div>
       </div>
     `)
@@ -383,13 +536,13 @@ function renderDiversification(profile) {
 
   if (profile.selectedPills.length === 1) {
     diversificationText.textContent =
-      `Your current preference set is concentrated in ${profile.selectedPills[0]} within ${profile.city}. To reduce concentration risk, consider adding adjacent categories such as Fusion, Street Food, or Fine Dining so your exposure is not tied too heavily to a single niche.`;
+      `Your current preference set is concentrated in ${profile.selectedPills[0]} within ${profile.city}. To reduce concentration risk, consider adding adjacent categories such as Fusion, Street Food, or Fine Dining.`;
   } else if (profile.selectedPills.length === 2) {
     diversificationText.textContent =
-      `Your interests are moderately diversified across ${profile.selectedPills.join(' and ')} in ${profile.city}. A sensible next step is to combine one established expert, one emerging expert, and one broader basket or index-style position for better balance.`;
+      `Your interests are moderately diversified across ${profile.selectedPills.join(' and ')} in ${profile.city}. A sensible next step is to combine one established expert, one emerging expert, and one broader basket position.`;
   } else {
     diversificationText.textContent =
-      `Your interests are already well diversified across ${profile.selectedPills.join(', ')} in ${profile.city}. The AI suggests maintaining a blend of established experts, specialist positions, and a small discovery allocation to preserve balance and upside.`;
+      `Your interests are already well diversified across ${profile.selectedPills.join(', ')} in ${profile.city}. The AI suggests maintaining a blend of established experts, specialist positions, and a small discovery allocation.`;
   }
 }
 
@@ -401,9 +554,8 @@ function renderWhyPicks(profile, rankedExperts) {
   whyPicksText.innerHTML = `
     <div class="ai-why-list">
       <div class="ai-why-item">These experts align closely with your selected categories: <strong>${profile.selectedPills.join(', ')}</strong>.</div>
-      <div class="ai-why-item">The picks are adapted for a <strong>${labels.userTypeLabel.toLowerCase()}</strong> rather than treating all users the same.</div>
-      <div class="ai-why-item">Your chosen goal of <strong>${labels.goalLabel}</strong> affects whether the AI prioritises safer, faster-growing, or more specialist opportunities.</div>
-      <div class="ai-why-item">Recommendations are weighted using your selected interests, city, experience level, goal, and risk fit.</div>
+      <div class="ai-why-item">The picks are adapted for a <strong>${labels.userTypeLabel.toLowerCase()}</strong>.</div>
+      <div class="ai-why-item">Your chosen goal of <strong>${labels.goalLabel}</strong> changes the weighting for risk, locality, and conviction.</div>
       <div class="ai-why-item">${topExpert ? `The current top expert is <strong>${topExpert.name}</strong> because they scored highest across relevance, fit, and confidence.` : 'No expert currently scored high enough to become a top recommendation.'}</div>
     </div>
   `;
@@ -418,7 +570,6 @@ function renderTopMatchSummary(rankedExperts) {
   }
 
   const topExpert = rankedExperts[0];
-
   topMatchSummary.innerHTML = `
     <strong>${topExpert.name}</strong> is currently your strongest fit at <strong>${topExpert.score}% compatibility</strong>.
     Their profile stands out because of ${topExpert.matchReasons.slice(0, 3).join(', ')}.
@@ -447,12 +598,7 @@ async function generateAIPicks() {
 
     const experts = await loadExperts();
 
-    const profile = {
-      userType,
-      city,
-      goal,
-      selectedPills
-    };
+    const profile = { userType, city, goal, selectedPills };
 
     const relevantExperts = experts.filter(expert => {
       const expertCategories = (expert.categories || []).map(normalise);
@@ -466,8 +612,11 @@ async function generateAIPicks() {
     aiSummaryText.textContent = buildAISummary(profile, rankedExperts);
 
     renderExperts(rankedExperts, city);
-    renderStarterPortfolio(userType);
-    renderIndices(buildIndexSuggestions(profile, rankedExperts));
+
+    const suggestedIndices = buildIndexSuggestions(profile, rankedExperts);
+    renderStarterPortfolio(profile, rankedExperts, suggestedIndices);
+    renderIndices(suggestedIndices);
+
     renderDiversification(profile);
     renderWhyPicks(profile, rankedExperts);
     renderTopMatchSummary(rankedExperts);
@@ -475,7 +624,7 @@ async function generateAIPicks() {
     aiResults.classList.remove('ai-results-hidden');
     aiResults.classList.add('ai-results-visible');
 
-    setStatus(`AI generated analysis complete and detailed below`);
+    setStatus('AI recommendations generated successfully below.');
   } catch (error) {
     console.error(error);
     setStatus(`Could not load expert data. ${error.message}`, true);

@@ -7,49 +7,9 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="profile">
-<nav class="sidebar">
-  <div class="sidebar-logo">
-    <div class="logo-text">EM</div>
-    <div class="logo-sub">ExpertMarket</div>
-  </div>
-  <div class="nav-section">
-    <a class="nav-item" href="expertmarket.html"><span>Home</span></a>
-    <a class="nav-item" href="dashboard.html"><span>Dashboard</span></a>
-  </div>
-  <div class="nav-section">
-    <div class="nav-label">Explore</div>
-    <a class="nav-item" href="profile.html"><span>Expert Profile</span></a>
-    <a class="nav-item" href="stock.html"><span>Restaurant Listings</span></a>
-    <a class="nav-item" href="category.html"><span>Categories</span></a>
-    <a class="nav-item" href="review.html"><span>Reviews</span></a>
-  </div>
-  <div class="nav-section">
-    <div class="nav-label">My Account</div>
-    <a class="nav-item" href="ai.html"><span>AI Picks</span></a>
-    <a class="nav-item" href="portfolio.html"><span>Portfolio</span></a>
-    <a class="nav-item" href="ipo.html"><span>Join as Expert</span></a>
-    <a class="nav-item" href="trust.html"><span>Trust and Safety</span></a>
-  </div>
-  <div class="sidebar-bottom">
-    <div class="user-pill">
-      <div class="avatar"></div>
-      <div>
-        <div class="user-name">Alex K.</div>
-        <div class="user-balance">£2,450</div>
-      </div>
-    </div>
-  </div>
-</nav>
+<div id="navbar-container"></div>
 <div class="main">
-<div class="ticker-wrap hidden" id="ticker">
-  <div class="ticker-inner">
-    <span class="tick-item"><span class="tick-name">YUKI.J</span> <span class="up">£142.50 ▲2.4%</span></span>
-    <span class="tick-item"><span class="tick-name">MARCO.F</span> <span class="up">£98.20 ▲1.1%</span></span>
-    <span class="tick-item"><span class="tick-name">CLAIRE.B</span> <span class="down">£67.80 ▼0.8%</span></span>
-    <span class="tick-item"><span class="tick-name">RAJAN.K</span> <span class="up">£211.00 ▲3.7%</span></span>
-    <span class="tick-item"><span class="tick-name">SOFIA.G</span> <span class="down">£55.40 ▼2.1%</span></span>
-  </div>
-</div>
+<div id="ticker-container"></div>
 <div class="page active" id="profile">
   <div class="topbar"><h1 class="page-title">Expert Profile</h1></div>
   <div class="profile-hero">
@@ -59,8 +19,7 @@
       <div style="color:var(--muted);font-size:14px;margin-top:2px" id="expertIdentifier">Expert ID: alex.kitchen · London, UK</div>
       <div class="verified-badge">Verified Expert</div>
       <div style="color:var(--muted);font-size:13px;margin-top:10px;max-width:700px;" id="expertBio"></div>
-      <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap" id="expertTags">
-      </div>
+      <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap" id="expertTags"></div>
     </div>
   </div>
 
@@ -102,44 +61,131 @@
     <div class="text-muted" style="font-size:13px;" id="modalComment"></div>
   </div>
 </div>
-
+<script src="navbar.js"></script>
 <script>
-const expertProfileData = {
-  expert: {
-    id: 'alex.kitchen',
-    name: 'Alex K.',
-    bio: 'Restaurant analyst focused on consistency, menu quality, and service reliability across high-traffic dining markets.',
-    tags: ['Fine Dining', 'Asian Cuisine', 'Service Quality', 'Value Scoring'],
-    stats: {
-      investors: 126,
-      totalInvested: 18420,
-      confidence: 89,
-      monthlyReturn: 12.4,
-      boughtByUsers: 93,
-      soldByUsers: 21
-    }
-  },
-  investors: [
-    { name: 'Maya Singh', units: 14, amount: 1680 },
-    { name: 'Liam Cooper', units: 8, amount: 960 },
-    { name: 'Nina Patel', units: 22, amount: 2640 },
-    { name: 'Jonas Meyer', units: 10, amount: 1200 }
-  ],
-  verdicts: [
-    { restaurant: 'Dishoom', verdict: 'Recommend', score: '91/100', comment: 'Consistent service quality and strong customer retention across peak hours.' },
-    { restaurant: 'Padella', verdict: 'Buy', score: '87/100', comment: 'Rising sentiment after menu refresh and improved wait-time handling.' },
-    { restaurant: 'Gymkhana', verdict: 'Hold', score: '93/100', comment: 'Excellent quality remains, but current valuation already prices in momentum.' },
-    { restaurant: 'Trullo', verdict: 'Avoid', score: '74/100', comment: 'Volatile review trend and lower consistency on repeat customer scores.' }
-  ]
-};
-
+let expertProfileData = null;
 let activeReview = null;
+
+function buildDefaultInvestors(expert) {
+  const base = Number(expert.id || 1) * 3;
+  return [
+    { name: 'Maya Singh', units: 8 + base, amount: (8 + base) * 120 },
+    { name: 'Liam Cooper', units: 5 + base, amount: (5 + base) * 120 },
+    { name: 'Nina Patel', units: 11 + base, amount: (11 + base) * 120 },
+    { name: 'Jonas Meyer', units: 6 + base, amount: (6 + base) * 120 }
+  ];
+}
+
+function buildDefaultVerdicts(expert) {
+  const cat1 = expert.categories?.[0] || 'Core';
+  const cat2 = expert.categories?.[1] || 'Specialist';
+
+  return [
+    {
+      restaurant: `${cat1} House`,
+      verdict: 'Recommend',
+      score: `${Math.max(80, Number(expert.confidence || 80))}/100`,
+      comment: `Strong consistency signals in ${cat1.toLowerCase()}-focused venues with reliable repeat-customer feedback.`
+    },
+    {
+      restaurant: `${cat2} Table`,
+      verdict: expert.risk === 'High' ? 'Buy' : 'Hold',
+      score: `${Math.max(76, Number(expert.confidence || 80) - 3)}/100`,
+      comment: `Good sentiment momentum with improving quality signals across recent reviewer feedback.`
+    },
+    {
+      restaurant: `${expert.city} Kitchen`,
+      verdict: expert.risk === 'Low' ? 'Recommend' : 'Hold',
+      score: `${Math.max(74, Number(expert.confidence || 80) - 6)}/100`,
+      comment: `Solid operating profile with location-based relevance and stable service quality signals.`
+    },
+    {
+      restaurant: `Urban ${cat1}`,
+      verdict: 'Avoid',
+      score: `${Math.max(68, Number(expert.confidence || 80) - 14)}/100`,
+      comment: `Volatile review trend and lower consistency on repeat customer scores.`
+    }
+  ];
+}
+
+function buildProfileData(expert) {
+  const investors = expert.investors && expert.investors.length ? expert.investors : buildDefaultInvestors(expert);
+  const verdicts = expert.verdicts && expert.verdicts.length ? expert.verdicts : buildDefaultVerdicts(expert);
+  const totalInvested = investors.reduce((sum, inv) => sum + Number(inv.amount || 0), 0);
+  const boughtByUsers = expert.profileStats?.boughtByUsers ?? (70 + Number(expert.id || 1) * 4);
+  const soldByUsers = expert.profileStats?.soldByUsers ?? (15 + Number(expert.id || 1));
+  const monthlyReturn = expert.profileStats?.monthlyReturn ?? (expert.risk === 'Low' ? 6.4 : expert.risk === 'Medium' ? 12.4 : 18.2);
+
+  return {
+    expert: {
+      id: expert.profileId || expert.name.toLowerCase().replace(/\s+/g, '.'),
+      name: expert.name,
+      city: expert.city,
+      niche: expert.niche,
+      bio: expert.bio,
+      tags: expert.tags || [],
+      stats: {
+        investors: investors.length ? investors.reduce((sum, inv) => sum + Number(inv.units || 0), 0) : 0,
+        totalInvested,
+        confidence: Number(expert.confidence || 0),
+        monthlyReturn,
+        boughtByUsers,
+        soldByUsers
+      }
+    },
+    investors,
+    verdicts
+  };
+}
+
+async function loadSelectedExpert() {
+  const params = new URLSearchParams(window.location.search);
+  const expertId = params.get('expert');
+
+  const stored = localStorage.getItem('selectedExpert');
+  const lastSeenId = localStorage.getItem('lastSeenExpertId');
+
+  if (stored) {
+    const parsed = JSON.parse(stored);
+    if (!expertId || String(parsed.id) === String(expertId)) {
+      localStorage.setItem('lastSeenExpertId', String(parsed.id));
+      return parsed;
+    }
+  }
+
+  const response = await fetch('experts.json');
+  if (!response.ok) throw new Error('Failed to load experts');
+
+  const experts = await response.json();
+  if (!Array.isArray(experts)) throw new Error('Invalid expert data');
+
+  let found = null;
+
+  if (expertId) {
+    found = experts.find(expert => String(expert.id) === String(expertId));
+  }
+
+  if (!found && lastSeenId) {
+    found = experts.find(expert => String(expert.id) === String(lastSeenId));
+  }
+
+  if (!found) {
+    found = experts[0];
+  }
+
+  if (found) {
+    localStorage.setItem('selectedExpert', JSON.stringify(found));
+    localStorage.setItem('lastSeenExpertId', String(found.id));
+  }
+
+  return found;
+}
 
 function renderExpertProfile() {
   const data = expertProfileData.expert;
   document.getElementById('expertAvatar').textContent = data.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
   document.getElementById('expertName').textContent = data.name;
-  document.getElementById('expertIdentifier').textContent = 'Expert ID: ' + data.id + ' · London, UK';
+  document.getElementById('expertIdentifier').textContent = 'Expert ID: ' + data.id + ' · ' + data.city + ', UK';
   document.getElementById('expertBio').textContent = data.bio;
 
   document.getElementById('expertTags').innerHTML = data.tags.map(tag => '<span class="cred-pill">' + tag + '</span>').join('');
@@ -157,17 +203,19 @@ function renderExpertProfile() {
   ].join('');
 
   document.getElementById('investorsTable').innerHTML = expertProfileData.investors.map(inv => {
-    return '<tr><td>' + inv.name + '</td><td class="mono">' + inv.units + '</td><td class="mono">£' + inv.amount.toLocaleString() + '</td></tr>';
+    return '<tr><td>' + inv.name + '</td><td class="mono">' + inv.units + '</td><td class="mono">£' + Number(inv.amount).toLocaleString() + '</td></tr>';
   }).join('');
 
   document.getElementById('verdictList').innerHTML = expertProfileData.verdicts.map(v => {
     const verdictClass = v.verdict === 'Avoid' ? 'down' : 'up';
-    return '<div class="review-item" onclick="openReviewModal(\'' + v.restaurant + '\')">' +
+    return '<div class="review-item" onclick="openReviewModal(\'' + v.restaurant.replace(/'/g, "\\'") + '\')">' +
       '<div class="expert-av a2">' + v.restaurant.slice(0, 2).toUpperCase() + '</div>' +
       '<div class="expert-info"><div class="expert-name">' + v.restaurant + '</div><div class="expert-niche">Score ' + v.score + '</div></div>' +
       '<div class="expert-price"><div class="' + verdictClass + '">' + v.verdict + '</div><div class="text-muted" style="font-size:11px;">View details</div></div>' +
       '</div>';
   }).join('');
+
+  document.title = 'ExpertMarket — ' + data.name;
 }
 
 function openReviewModal(restaurantName) {
@@ -196,6 +244,15 @@ function closeReviewModal(event) {
   };
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.querySelectorAll('.nav-item')[navMap[id]]?.classList.add('active');
+
+  loadSelectedExpert()
+    .then(expert => {
+      expertProfileData = buildProfileData(expert);
+      renderExpertProfile();
+    })
+    .catch(error => {
+      console.error(error);
+    });
 })();
 
 function setTab(t) {
@@ -206,8 +263,6 @@ function setTab(t) {
 function togglePill(el) {
   el.classList.toggle('selected');
 }
-
-renderExpertProfile();
 </script>
 </body>
 </html>
