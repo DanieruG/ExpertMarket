@@ -1,16 +1,3 @@
-const pageFiles = {
-  landing: 'expertmarket.html',
-  dashboard: 'dashboard.html',
-  profile: 'profile.html',
-  stock: 'stock.html',
-  category: 'category.html',
-  review: 'review.html',
-  ai: 'ai.html',
-  portfolio: 'portfolio.html',
-  ipo: 'ipo.html',
-  trust: 'trust.html'
-};
-
 let expertDataCache = [];
 
 function togglePill(el) {
@@ -634,24 +621,3 @@ async function generateAIPicks() {
   }
 }
 
-(function initPage() {
-  const id = document.body.dataset.page;
-  const ticker = document.getElementById('ticker');
-  if (ticker) ticker.style.display = id === 'landing' ? 'none' : 'block';
-
-  const navMap = {
-    landing: 0,
-    dashboard: 1,
-    profile: 2,
-    stock: 3,
-    category: 4,
-    review: 5,
-    ai: 6,
-    portfolio: 7,
-    ipo: 8,
-    trust: 9
-  };
-
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.querySelectorAll('.nav-item')[navMap[id]]?.classList.add('active');
-})();

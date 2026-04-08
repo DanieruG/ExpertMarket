@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ExpertMarket — Join as an Expert</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="expert_application">
+  <div id="navbar-container"></div>
+
+  <div class="main">
+    <div id="ticker-container"></div>
+
+    <div class="page active" id="expert_application">
+      <div class="topbar">
+        <h1 class="page-title">Join as an Expert</h1>
+        <div class="topbar-actions">
+          <span class="badge badge-gold" style="padding:8px 14px;">Expert Listing Application</span>
+        </div>
+      </div>
+
+      <div class="grid grid-2" style="margin-bottom: 24px;">
+        <!-- LEFT COLUMN -->
+        <div id="applicationColumn">
+          <div class="card" style="margin-bottom: 20px;">
+            <div class="section-title" style="margin-bottom: 16px;">Expert Application Form</div>
+
+            <div class="form-field">
+              <label class="form-label" for="fullName">Full Name</label>
+              <input
+                id="fullName"
+                type="text"
+                class="form-input"
+                placeholder="Your professional name"
+              />
+            </div>
+
+            <div class="form-field">
+              <label class="form-label">Specialist Area</label>
+
+              <div class="multi-select-box">
+                <div id="specialistSelected" class="multi-select-selected empty">
+                  <span class="multi-placeholder">Select your specialist area</span>
+                </div>
+
+                <div class="multi-select-controls">
+                  <select id="specialistPreset" class="form-select">
+                    <option value="">Select from preset areas</option>
+                    <option value="Japanese Cuisine">Japanese Cuisine</option>
+                    <option value="Indian Cuisine">Indian Cuisine</option>
+                    <option value="Fine Dining">Fine Dining</option>
+                    <option value="Italian">Italian</option>
+                    <option value="Plant-Based">Plant-Based</option>
+                    <option value="Budget Eats">Budget Eats</option>
+                    <option value="Street Food">Street Food</option>
+                    <option value="Wine & Sommelier">Wine & Sommelier</option>
+                  </select>
+
+                  <div class="multi-add-row">
+                    <input
+                      id="customSpecialistArea"
+                      type="text"
+                      class="form-input"
+                      placeholder="Add your own specialist area"
+                    />
+                    <button type="button" id="addSpecialistBtn" class="btn btn-outline">
+                      Add
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label class="form-label" for="credentials">Professional Credentials</label>
+              <input
+                id="credentials"
+                type="text"
+                class="form-input"
+                placeholder="e.g. Michelin Inspector, Culinary Arts degree"
+              />
+            </div>
+
+            <div class="form-field">
+              <label class="form-label" for="experience">Years of Experience</label>
+              <input
+                id="experience"
+                type="number"
+                class="form-input"
+                placeholder="8"
+                min="0"
+              />
+            </div>
+
+            <div class="form-field">
+              <label class="form-label" for="credentialUpload">Upload Credential Documents</label>
+              <label for="credentialUpload" class="upload-box">
+                <div class="upload-icon">📎</div>
+                <div class="upload-title">Click to upload credential files</div>
+                <div class="upload-sub">ID, certificates, press clippings accepted</div>
+              </label>
+              <input id="credentialUpload" type="file" class="upload-input" multiple />
+              <div id="fileList" class="file-list"></div>
+            </div>
+
+            <div class="form-field">
+              <label class="form-label" for="portfolioUrl">LinkedIn / Portfolio URL</label>
+              <input
+                id="portfolioUrl"
+                type="url"
+                class="form-input"
+                placeholder="https://linkedin.com/in/..."
+              />
+            </div>
+
+            <div class="card" style="padding:16px; margin:20px 0 16px;">
+              <div class="section-title" style="margin-bottom: 12px; font-size: 15px;">Eligibility Confirmation</div>
+
+              <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:14px;">
+                <label class="check-row">
+                  <input type="checkbox" class="eligibility-checkbox" />
+                  <span>I have at least 3 years of professional experience in this field</span>
+                </label>
+
+                <label class="check-row">
+                  <input type="checkbox" class="eligibility-checkbox" />
+                  <span>I can provide verifiable credentials or a portfolio</span>
+                </label>
+
+                <label class="check-row">
+                  <input type="checkbox" class="eligibility-checkbox" />
+                  <span>I can publish at least 2 reviews per month</span>
+                </label>
+
+                <label class="check-row">
+                  <input type="checkbox" class="eligibility-checkbox" />
+                  <span>I have no undisclosed commercial relationships</span>
+                </label>
+
+                <label class="check-row">
+                  <input type="checkbox" class="eligibility-checkbox" />
+                  <span>I agree to ongoing AI-monitored credibility scoring</span>
+                </label>
+              </div>
+
+              <div class="info-tip">
+                You must confirm all eligibility criteria before submitting your application.
+              </div>
+            </div>
+
+            <button id="submitApplicationBtn" class="btn btn-primary btn-block">
+              Submit Expert Listing Application
+            </button>
+            <div id="formStatus" class="status-msg"></div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div id="statusColumn">
+        <div id="verificationCard" class="card" style="display:none;">
+          <div class="section-title" style="margin-bottom: 14px;">Verification Progress</div>
+
+          <div style="margin-bottom: 16px;">
+            <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
+              <span id="verificationStageLabel">Application Submitted</span>
+              <span id="verificationStageStatus" class="badge badge-purple">Stage 1 of 4</span>
+            </div>
+            <div class="progress-bar">
+              <div id="verificationProgressFill" class="progress-fill" style="width:25%;"></div>
+            </div>
+          </div>
+
+          <div class="verify-step">
+            <div id="step1Num" class="step-num active">1</div>
+            <div class="step-info">
+              <h4>Identity Check</h4>
+              <p>Government ID and submitted details are under review.</p>
+            </div>
+          </div>
+
+          <div class="verify-step">
+            <div id="step2Num" class="step-num todo">2</div>
+            <div class="step-info">
+              <h4>Credential Verification</h4>
+              <p>Certificates and work history are checked against public records.</p>
+            </div>
+          </div>
+
+          <div class="verify-step">
+            <div id="step3Num" class="step-num todo">3</div>
+            <div class="step-info">
+              <h4>Knowledge Assessment</h4>
+              <p>Short quiz in your specialist area to confirm expertise.</p>
+            </div>
+          </div>
+
+          <div class="verify-step">
+            <div id="step4Num" class="step-num todo">4</div>
+            <div class="step-info">
+              <h4>Listing & Launch</h4>
+              <p>Your expert profile is prepared for investor access.</p>
+            </div>
+          </div>
+
+          <button id="clearApplicationBtn" class="btn btn-outline" style="width:100%; margin-top:16px;">
+            Clear Saved Application
+          </button>
+        </div>
+
+          <div id="eligibilityInfoCard" class="card">
+            <div class="section-title" style="margin-bottom: 12px;">Eligibility Criteria</div>
+
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <div style="display:flex; gap:8px; align-items:flex-start;">
+                <span class="up">✓</span>
+                <span style="font-size:13px; color:var(--muted);">
+                  Minimum 3 years professional experience in your field
+                </span>
+              </div>
+
+              <div style="display:flex; gap:8px; align-items:flex-start;">
+                <span class="up">✓</span>
+                <span style="font-size:13px; color:var(--muted);">
+                  Verifiable credentials such as qualifications or media portfolio
+                </span>
+              </div>
+
+              <div style="display:flex; gap:8px; align-items:flex-start;">
+                <span class="up">✓</span>
+                <span style="font-size:13px; color:var(--muted);">
+                  Commitment to publishing at least 2 reviews per month
+                </span>
+              </div>
+
+              <div style="display:flex; gap:8px; align-items:flex-start;">
+                <span class="up">✓</span>
+                <span style="font-size:13px; color:var(--muted);">
+                  No undisclosed commercial relationships
+                </span>
+              </div>
+
+              <div style="display:flex; gap:8px; align-items:flex-start;">
+                <span class="up">✓</span>
+                <span style="font-size:13px; color:var(--muted);">
+                  Agreement to ongoing AI-monitored credibility scoring
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="navbar.js"></script>
+  <script>
+    (function initPage() {
+      const id = document.body.dataset.page;
+      const ticker = document.getElementById('ticker');
+      if (ticker) ticker.style.display = id === 'landing' ? 'none' : 'block';
+
+      const navMap = {
+        landing: 0,
+        dashboard: 1,
+        profile: 2,
+        stock: 3,
+        category: 4,
+        review: 5,
+        ai: 6,
+        portfolio: 7,
+        expert_application: 8,
+        trust: 9
+      };
+
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.querySelectorAll('.nav-item')[navMap[id]]?.classList.add('active');
+    })();
+
+    const STORAGE_KEY = 'expertMarketApplication';
+
+    const applicationColumn = document.getElementById('applicationColumn');
+    const statusColumn = document.getElementById('statusColumn');
+    const uploadInput = document.getElementById('credentialUpload');
+    const fileList = document.getElementById('fileList');
+    const submitBtn = document.getElementById('submitApplicationBtn');
+    const formStatus = document.getElementById('formStatus');
+    const verificationCard = document.getElementById('verificationCard');
+    const eligibilityInfoCard = document.getElementById('eligibilityInfoCard');
+    const eligibilityCheckboxes = document.querySelectorAll('.eligibility-checkbox');
+    const clearApplicationBtn = document.getElementById('clearApplicationBtn');
+
+    const specialistPreset = document.getElementById('specialistPreset');
+    const customSpecialistArea = document.getElementById('customSpecialistArea');
+    const addSpecialistBtn = document.getElementById('addSpecialistBtn');
+    const specialistSelected = document.getElementById('specialistSelected');
+
+    const verificationStageLabel = document.getElementById('verificationStageLabel');
+    const verificationStageStatus = document.getElementById('verificationStageStatus');
+    const verificationProgressFill = document.getElementById('verificationProgressFill');
+
+    const step1Num = document.getElementById('step1Num');
+    const step2Num = document.getElementById('step2Num');
+    const step3Num = document.getElementById('step3Num');
+    const step4Num = document.getElementById('step4Num');
+
+    let uploadedFiles = [];
+    let selectedSpecialistAreas = [];
+
+    function setVerificationStage(stage = 1) {
+      const steps = [step1Num, step2Num, step3Num, step4Num];
+
+      steps.forEach((stepEl, index) => {
+        stepEl.classList.remove('done', 'active', 'todo');
+
+        if (index + 1 < stage) {
+          stepEl.classList.add('done');
+          stepEl.textContent = '✓';
+        } else if (index + 1 === stage) {
+          stepEl.classList.add('active');
+          stepEl.textContent = index + 1;
+        } else {
+          stepEl.classList.add('todo');
+          stepEl.textContent = index + 1;
+        }
+      });
+
+      const stageLabels = {
+        1: 'Application Submitted',
+        2: 'Identity Check Complete',
+        3: 'Credential Verification Complete',
+        4: 'Knowledge Assessment Complete'
+      };
+
+      verificationStageLabel.textContent = stageLabels[stage] || 'Application Submitted';
+      verificationStageStatus.textContent = `Stage ${stage} of 4`;
+      verificationProgressFill.style.width = `${stage * 25}%`;
+    }
+
+    uploadInput.addEventListener('change', function (event) {
+      const newFiles = Array.from(event.target.files);
+
+      newFiles.forEach(file => {
+        const exists = uploadedFiles.some(
+          existing => existing.name === file.name && existing.size === file.size
+        );
+
+        if (!exists) {
+          uploadedFiles.push({
+            name: file.name,
+            size: file.size
+          });
+        }
+      });
+
+      renderFileList();
+      uploadInput.value = '';
+    });
+
+    function renderFileList() {
+      fileList.innerHTML = '';
+
+      if (uploadedFiles.length === 0) return;
+
+      uploadedFiles.forEach((file, index) => {
+        const item = document.createElement('div');
+        item.className = 'file-chip';
+
+        item.innerHTML = `
+          <span class="file-chip-name">${file.name}</span>
+          <button type="button" class="file-chip-remove" aria-label="Remove file">&times;</button>
+        `;
+
+        item.querySelector('.file-chip-remove').addEventListener('click', function () {
+          uploadedFiles.splice(index, 1);
+          renderFileList();
+        });
+
+        fileList.appendChild(item);
+      });
+    }
+
+    function renderSpecialistAreas() {
+      specialistSelected.innerHTML = '';
+
+      if (selectedSpecialistAreas.length === 0) {
+        specialistSelected.classList.add('empty');
+        specialistSelected.innerHTML = '<span class="multi-placeholder">Select your specialist area</span>';
+        return;
+      }
+
+      specialistSelected.classList.remove('empty');
+
+      selectedSpecialistAreas.forEach((area, index) => {
+        const pill = document.createElement('div');
+        pill.className = 'selected-pill';
+
+        pill.innerHTML = `
+          <span>${area}</span>
+          <button type="button" class="selected-pill-remove" aria-label="Remove specialist area">&times;</button>
+        `;
+
+        pill.querySelector('.selected-pill-remove').addEventListener('click', function () {
+          selectedSpecialistAreas.splice(index, 1);
+          renderSpecialistAreas();
+        });
+
+        specialistSelected.appendChild(pill);
+      });
+    }
+
+    function addSpecialistArea(area) {
+      const cleanArea = area.trim();
+
+      if (!cleanArea) return;
+
+      const exists = selectedSpecialistAreas.some(
+        existing => existing.toLowerCase() === cleanArea.toLowerCase()
+      );
+
+      if (exists) return;
+
+      selectedSpecialistAreas.push(cleanArea);
+      renderSpecialistAreas();
+    }
+
+    specialistPreset.addEventListener('change', function () {
+      if (this.value) {
+        addSpecialistArea(this.value);
+        this.value = '';
+      }
+    });
+
+    addSpecialistBtn.addEventListener('click', function () {
+      addSpecialistArea(customSpecialistArea.value);
+      customSpecialistArea.value = '';
+    });
+
+    customSpecialistArea.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        addSpecialistArea(customSpecialistArea.value);
+        customSpecialistArea.value = '';
+      }
+    });
+
+    function saveApplication(data) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function getSavedApplication() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    }
+
+    function showSubmittedState(savedData) {
+      applicationColumn.style.display = 'none';
+      eligibilityInfoCard.style.display = 'none';
+      verificationCard.style.display = 'block';
+      statusColumn.classList.add('submitted-only');
+
+      if (savedData && Array.isArray(savedData.specialistArea)) {
+        selectedSpecialistAreas = [...savedData.specialistArea];
+      }
+    }
+
+    function showFormState() {
+      applicationColumn.style.display = 'block';
+      eligibilityInfoCard.style.display = 'block';
+      verificationCard.style.display = 'none';
+      statusColumn.classList.remove('submitted-only');
+    }
+
+    submitBtn.addEventListener('click', function () {
+      const fullName = document.getElementById('fullName').value.trim();
+      const specialistArea = [...selectedSpecialistAreas];
+      const credentials = document.getElementById('credentials').value.trim();
+      const experience = document.getElementById('experience').value.trim();
+      const portfolioUrl = document.getElementById('portfolioUrl').value.trim();
+      const allChecked = Array.from(eligibilityCheckboxes).every(box => box.checked);
+
+      if (!fullName) {
+        formStatus.textContent = 'Please enter your full name.';
+        return;
+      }
+
+      if (specialistArea.length === 0) {
+        formStatus.textContent = 'Please select at least one specialist area.';
+        return;
+      }
+
+      if (!credentials) {
+        formStatus.textContent = 'Please enter your professional credentials.';
+        return;
+      }
+
+      if (!experience) {
+        formStatus.textContent = 'Please enter your years of experience.';
+        return;
+      }
+
+      if (uploadedFiles.length === 0) {
+        formStatus.textContent = 'Please upload at least one credential document.';
+        return;
+      }
+
+      if (!allChecked) {
+        formStatus.textContent = 'Please confirm all eligibility criteria before submitting.';
+        return;
+      }
+
+      const applicationData = {
+        submitted: true,
+        submittedAt: new Date().toISOString(),
+        fullName,
+        specialistArea,
+        credentials,
+        experience,
+        portfolioUrl,
+        files: uploadedFiles
+      };
+      
+
+      saveApplication(applicationData);
+      formStatus.textContent = '';
+      showSubmittedState(applicationData);
+    });
+
+    clearApplicationBtn.addEventListener('click', function () {
+      localStorage.removeItem(STORAGE_KEY);
+      uploadedFiles = [];
+      selectedSpecialistAreas = [];
+      showFormState();
+      window.location.reload();
+    });
+
+    renderSpecialistAreas();
+
+    const savedApplication = getSavedApplication();
+    if (savedApplication && savedApplication.submitted) {
+      showSubmittedState(savedApplication);
+    } else {
+      showFormState();
+    }
+  </script>
+</body>
+</html>

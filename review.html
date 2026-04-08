@@ -22,28 +22,6 @@
 </div>
 </div>
   <script src="navbar.js"></script>
-<script>
-(function initPage() {
-  const id = document.body.dataset.page;
-  const ticker = document.getElementById('ticker');
-  if (ticker) ticker.style.display = id === 'landing' ? 'none' : 'block';
 
-  const navMap = {
-    landing: 0, dashboard: 1, profile: 2, stock: 3, category: 4,
-    review: 5, ai: 6, portfolio: 7, ipo: 8, trust: 9
-  };
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.querySelectorAll('.nav-item')[navMap[id]]?.classList.add('active');
-})();
-
-function setTab(t) {
-  document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-  document.getElementById('tab-' + t)?.classList.add('active');
-}
-
-function togglePill(el) {
-  el.classList.toggle('selected');
-}
-</script>
 </body>
 </html>
