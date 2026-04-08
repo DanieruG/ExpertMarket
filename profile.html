@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ExpertMarket — Expert Profile</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="profile">
@@ -20,7 +19,7 @@
   <div class="nav-section">
     <div class="nav-label">Explore</div>
     <a class="nav-item" href="profile.html"><span>Expert Profile</span></a>
-    <a class="nav-item" href="stock.html"><span>Expert Stock</span></a>
+    <a class="nav-item" href="stock.html"><span>Restaurant Listings</span></a>
     <a class="nav-item" href="category.html"><span>Categories</span></a>
     <a class="nav-item" href="review.html"><span>Reviews</span></a>
   </div>
@@ -42,7 +41,7 @@
   </div>
 </nav>
 <div class="main">
-<div class="ticker-wrap" id="ticker" style="display:none">
+<div class="ticker-wrap hidden" id="ticker">
   <div class="ticker-inner">
     <span class="tick-item"><span class="tick-name">YUKI.J</span> <span class="up">£142.50 ▲2.4%</span></span>
     <span class="tick-item"><span class="tick-name">MARCO.F</span> <span class="up">£98.20 ▲1.1%</span></span>
@@ -54,21 +53,138 @@
 <div class="page active" id="profile">
   <div class="topbar"><h1 class="page-title">Expert Profile</h1></div>
   <div class="profile-hero">
-    <div class="profile-av-lg">RK</div>
+    <div class="profile-av-lg" id="expertAvatar">AK</div>
     <div style="flex:1">
-      <h2 style="font-size:26px;font-weight:800;letter-spacing:-0.5px">Rajan Kumar</h2>
-      <div style="color:var(--muted);font-size:14px;margin-top:2px">Indian and South Asian Cuisine - London, UK</div>
+      <h2 style="font-size:26px;font-weight:800;letter-spacing:-0.5px" id="expertName">Alex K.</h2>
+      <div style="color:var(--muted);font-size:14px;margin-top:2px" id="expertIdentifier">Expert ID: alex.kitchen · London, UK</div>
       <div class="verified-badge">Verified Expert</div>
-      <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
-        <span class="cred-pill">Culinary Arts, Le Cordon Bleu</span>
-        <span class="cred-pill">Former Michelin Inspector</span>
-        <span class="cred-pill">Times Food Critic (8 yrs)</span>
+      <div style="color:var(--muted);font-size:13px;margin-top:10px;max-width:700px;" id="expertBio"></div>
+      <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap" id="expertTags">
       </div>
+    </div>
+  </div>
+
+  <div class="grid grid-4" style="margin-bottom:20px;" id="expertStats"></div>
+
+  <div class="grid grid-2" style="margin-bottom:20px;" id="investorPopularity"></div>
+
+  <div class="grid grid-2" style="margin-bottom:20px;">
+    <div class="card">
+      <div class="section-header"><div class="section-title">Investors</div></div>
+      <table class="table">
+        <thead>
+          <tr><th>Investor</th><th>Units</th><th>Amount Invested</th></tr>
+        </thead>
+        <tbody id="investorsTable"></tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="section-header"><div class="section-title">Restaurant Reviews</div></div>
+      <div id="verdictList"></div>
     </div>
   </div>
 </div>
 </div>
+
+<div class="modal-backdrop" id="reviewModal" onclick="closeReviewModal(event)">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div>
+        <div class="card-title" style="margin-bottom:4px;">Restaurant Review</div>
+        <div class="section-title" id="modalRestaurant">Dishoom</div>
+      </div>
+      <button class="icon-btn" onclick="closeReviewModal()">Close</button>
+    </div>
+    <div class="metric-row"><span class="text-muted">Verdict</span><span class="mono" id="modalVerdict">Recommend</span></div>
+    <div class="metric-row"><span class="text-muted">Score</span><span class="mono" id="modalScore">91/100</span></div>
+    <div class="divider" style="margin:12px 0;"></div>
+    <div class="text-muted" style="font-size:13px;" id="modalComment"></div>
+  </div>
+</div>
+
 <script>
+const expertProfileData = {
+  expert: {
+    id: 'alex.kitchen',
+    name: 'Alex K.',
+    bio: 'Restaurant analyst focused on consistency, menu quality, and service reliability across high-traffic dining markets.',
+    tags: ['Fine Dining', 'Asian Cuisine', 'Service Quality', 'Value Scoring'],
+    stats: {
+      investors: 126,
+      totalInvested: 18420,
+      confidence: 89,
+      monthlyReturn: 12.4,
+      boughtByUsers: 93,
+      soldByUsers: 21
+    }
+  },
+  investors: [
+    { name: 'Maya Singh', units: 14, amount: 1680 },
+    { name: 'Liam Cooper', units: 8, amount: 960 },
+    { name: 'Nina Patel', units: 22, amount: 2640 },
+    { name: 'Jonas Meyer', units: 10, amount: 1200 }
+  ],
+  verdicts: [
+    { restaurant: 'Dishoom', verdict: 'Recommend', score: '91/100', comment: 'Consistent service quality and strong customer retention across peak hours.' },
+    { restaurant: 'Padella', verdict: 'Buy', score: '87/100', comment: 'Rising sentiment after menu refresh and improved wait-time handling.' },
+    { restaurant: 'Gymkhana', verdict: 'Hold', score: '93/100', comment: 'Excellent quality remains, but current valuation already prices in momentum.' },
+    { restaurant: 'Trullo', verdict: 'Avoid', score: '74/100', comment: 'Volatile review trend and lower consistency on repeat customer scores.' }
+  ]
+};
+
+let activeReview = null;
+
+function renderExpertProfile() {
+  const data = expertProfileData.expert;
+  document.getElementById('expertAvatar').textContent = data.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+  document.getElementById('expertName').textContent = data.name;
+  document.getElementById('expertIdentifier').textContent = 'Expert ID: ' + data.id + ' · London, UK';
+  document.getElementById('expertBio').textContent = data.bio;
+
+  document.getElementById('expertTags').innerHTML = data.tags.map(tag => '<span class="cred-pill">' + tag + '</span>').join('');
+
+  document.getElementById('expertStats').innerHTML = [
+    '<div class="card"><div class="card-title">Investors</div><div class="stat-value">' + data.stats.investors + '</div><div class="stat-change up">Active backers</div></div>',
+    '<div class="card"><div class="card-title">Total Invested</div><div class="stat-value">£' + data.stats.totalInvested.toLocaleString() + '</div><div class="stat-change up">Across all units</div></div>',
+    '<div class="card"><div class="card-title">Confidence Score</div><div class="stat-value up">' + data.stats.confidence + '/100</div><div class="stat-change up">Based on verdict outcomes</div></div>',
+    '<div class="card"><div class="card-title">30D Performance</div><div class="stat-value up">+' + data.stats.monthlyReturn + '%</div><div class="stat-change up">Vs market +2.1%</div></div>'
+  ].join('');
+
+  document.getElementById('investorPopularity').innerHTML = [
+    '<div class="card"><div class="card-title">Investor Popularity</div><div class="metric-row"><span class="text-muted">Users Bought In</span><span class="mono up">' + data.stats.boughtByUsers + '</span></div><div class="metric-row"><span class="text-muted">Users Sold/Withdrew</span><span class="mono down">' + data.stats.soldByUsers + '</span></div></div>',
+    '<div class="card"><div class="card-title">Net Investor Flow</div><div class="stat-value up">+' + (data.stats.boughtByUsers - data.stats.soldByUsers) + '</div><div class="stat-change up">Current cycle</div></div>'
+  ].join('');
+
+  document.getElementById('investorsTable').innerHTML = expertProfileData.investors.map(inv => {
+    return '<tr><td>' + inv.name + '</td><td class="mono">' + inv.units + '</td><td class="mono">£' + inv.amount.toLocaleString() + '</td></tr>';
+  }).join('');
+
+  document.getElementById('verdictList').innerHTML = expertProfileData.verdicts.map(v => {
+    const verdictClass = v.verdict === 'Avoid' ? 'down' : 'up';
+    return '<div class="review-item" onclick="openReviewModal(\'' + v.restaurant + '\')">' +
+      '<div class="expert-av a2">' + v.restaurant.slice(0, 2).toUpperCase() + '</div>' +
+      '<div class="expert-info"><div class="expert-name">' + v.restaurant + '</div><div class="expert-niche">Score ' + v.score + '</div></div>' +
+      '<div class="expert-price"><div class="' + verdictClass + '">' + v.verdict + '</div><div class="text-muted" style="font-size:11px;">View details</div></div>' +
+      '</div>';
+  }).join('');
+}
+
+function openReviewModal(restaurantName) {
+  activeReview = expertProfileData.verdicts.find(v => v.restaurant === restaurantName);
+  if (!activeReview) return;
+  document.getElementById('modalRestaurant').textContent = activeReview.restaurant;
+  document.getElementById('modalVerdict').textContent = activeReview.verdict;
+  document.getElementById('modalScore').textContent = activeReview.score;
+  document.getElementById('modalComment').textContent = activeReview.comment;
+  document.getElementById('reviewModal').classList.add('open');
+}
+
+function closeReviewModal(event) {
+  if (event && event.target.id && event.target.id !== 'reviewModal') return;
+  document.getElementById('reviewModal').classList.remove('open');
+}
+
 (function initPage() {
   const id = document.body.dataset.page;
   const ticker = document.getElementById('ticker');
@@ -90,6 +206,8 @@ function setTab(t) {
 function togglePill(el) {
   el.classList.toggle('selected');
 }
+
+renderExpertProfile();
 </script>
 </body>
 </html>

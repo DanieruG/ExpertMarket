@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ExpertMarket — Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="dashboard">
@@ -20,7 +19,7 @@
   <div class="nav-section">
     <div class="nav-label">Explore</div>
     <a class="nav-item" href="profile.html"><span>Expert Profile</span></a>
-    <a class="nav-item" href="stock.html"><span>Expert Stock</span></a>
+    <a class="nav-item" href="stock.html"><span>Restaurant Listings</span></a>
     <a class="nav-item" href="category.html"><span>Categories</span></a>
     <a class="nav-item" href="review.html"><span>Reviews</span></a>
   </div>
@@ -42,7 +41,7 @@
   </div>
 </nav>
 <div class="main">
-<div class="ticker-wrap" id="ticker" style="display:none">
+<div class="ticker-wrap hidden" id="ticker">
   <div class="ticker-inner">
     <span class="tick-item"><span class="tick-name">YUKI.J</span> <span class="up">£142.50 ▲2.4%</span></span>
     <span class="tick-item"><span class="tick-name">MARCO.F</span> <span class="up">£98.20 ▲1.1%</span></span>
@@ -59,6 +58,39 @@
     <div class="card"><div class="card-title">Today's Volume</div><div class="stat-value">£1.2M</div><div class="stat-change up">▲ 18% vs yesterday</div></div>
     <div class="card"><div class="card-title">AI Alerts</div><div class="stat-value">7</div><div class="stat-change" style="color:var(--gold)">3 high priority</div></div>
   </div>
+
+  <div class="listing-grid" style="margin-bottom:24px;">
+    <div class="card">
+      <div class="section-header">
+        <div class="section-title">Restaurant Listings</div>
+        <span class="badge badge-green" id="listingCount">4 live</span>
+      </div>
+      <div id="listingContainer"></div>
+    </div>
+
+    <div class="card">
+      <div class="section-title" style="margin-bottom:12px;">Quick Trade</div>
+      <div class="text-muted" style="font-size:12px; margin-bottom:8px;" id="selectedRestaurantLabel">Selected: Dishoom (dishoom)</div>
+      <div class="value-lg" id="selectedRestaurantValue">£120.00</div>
+      <div class="stat-change up" id="selectedRestaurantChange">▲ 3.63% today</div>
+
+      <div class="divider" style="margin:14px 0;"></div>
+
+      <div class="metric-row"><span class="text-muted">Confidence Score</span><span class="mono" id="selectedConfidence">91/100</span></div>
+      <div class="metric-row"><span class="text-muted">Your Units</span><span class="mono" id="selectedUnits">0</span></div>
+      <div class="metric-row"><span class="text-muted">Balance</span><span class="mono" id="selectedBalance">£2,450.00</span></div>
+
+      <label class="form-label" style="margin-top:12px;">Units</label>
+      <input class="form-input" id="tradeQty" type="number" min="1" value="1">
+
+      <div style="display:flex; gap:10px;">
+        <button class="btn btn-primary" style="flex:1;" onclick="tradeListing('buy')">Buy</button>
+        <button class="btn btn-danger" style="flex:1;" onclick="tradeListing('sell')">Sell</button>
+      </div>
+      <div class="status-msg" id="tradeStatus"></div>
+    </div>
+  </div>
+
   <div class="card"><div class="section-title">Top Rising Experts</div><p style="color:var(--muted)">Rajan Kumar, Yuki Tanaka, and Marco Rossi are leading today's momentum.</p></div>
 </div>
 </div>
@@ -84,6 +116,128 @@ function setTab(t) {
 function togglePill(el) {
   el.classList.toggle('selected');
 }
+
+const dashboardMarket = {
+  user: {
+    balance: 2450,
+    portfolio: [
+      { restaurantId: 'dishoom', units: 4 },
+      { restaurantId: 'padella', units: 2 }
+    ]
+  },
+  restaurants: [
+    { id: 'dishoom', name: 'Dishoom', value: 120, confidence: 91, changePct: 3.63, score: 'Strong Buy' },
+    { id: 'padella', name: 'Padella', value: 95, confidence: 87, changePct: 1.9, score: 'Buy' },
+    { id: 'gymkhana', name: 'Gymkhana', value: 142, confidence: 93, changePct: -0.7, score: 'Hold' },
+    { id: 'trullo', name: 'Trullo', value: 88, confidence: 84, changePct: 2.2, score: 'Buy' }
+  ]
+};
+
+let selectedListing = 'dishoom';
+
+function formatGBP(value) {
+  return '£' + value.toFixed(2);
+}
+
+function getUnits(id) {
+  return dashboardMarket.user.portfolio.find(p => p.restaurantId === id)?.units || 0;
+}
+
+function setUnits(id, units) {
+  const entry = dashboardMarket.user.portfolio.find(p => p.restaurantId === id);
+  if (entry) entry.units = units;
+  else if (units > 0) dashboardMarket.user.portfolio.push({ restaurantId: id, units });
+  dashboardMarket.user.portfolio = dashboardMarket.user.portfolio.filter(p => p.units > 0);
+}
+
+function selectListing(id) {
+  selectedListing = id;
+  renderListings();
+  renderTradePanel();
+}
+
+function renderListings() {
+  const container = document.getElementById('listingContainer');
+  if (!container) return;
+  container.innerHTML = dashboardMarket.restaurants.map(r => {
+    const isUp = r.changePct >= 0;
+    const trendClass = isUp ? 'up' : 'down';
+    const trendArrow = isUp ? '▲' : '▼';
+    const activeClass = r.id === selectedListing ? ' style="background:var(--surface2);padding:14px 12px;border-radius:12px;"' : '';
+    return '<div class="listing-item"' + activeClass + '>' +
+      '<div class="listing-meta">' +
+      '<div class="listing-avatar">' + r.name.slice(0, 2).toUpperCase() + '</div>' +
+      '<div>' +
+      '<div class="listing-name">' + r.name + '</div>' +
+      '<div class="listing-sub">ID: ' + r.id + ' · Confidence ' + r.confidence + '/100</div>' +
+      '</div>' +
+      '</div>' +
+      '<div style="text-align:right;">' +
+      '<div class="mono">' + formatGBP(r.value) + '</div>' +
+      '<div class="stat-change ' + trendClass + '">' + trendArrow + ' ' + Math.abs(r.changePct).toFixed(2) + '%</div>' +
+      '<button class="btn btn-outline btn-sm" style="margin-top:6px;" onclick="selectListing(\'' + r.id + '\')">View</button>' +
+      '</div>' +
+      '</div>';
+  }).join('');
+}
+
+function renderTradePanel() {
+  const current = dashboardMarket.restaurants.find(r => r.id === selectedListing);
+  if (!current) return;
+  const changeClass = current.changePct >= 0 ? 'up' : 'down';
+  const arrow = current.changePct >= 0 ? '▲' : '▼';
+  document.getElementById('selectedRestaurantLabel').textContent = 'Selected: ' + current.name + ' (' + current.id + ')';
+  document.getElementById('selectedRestaurantValue').textContent = formatGBP(current.value);
+  const changeNode = document.getElementById('selectedRestaurantChange');
+  changeNode.classList.remove('up', 'down');
+  changeNode.classList.add(changeClass);
+  changeNode.textContent = arrow + ' ' + Math.abs(current.changePct).toFixed(2) + '% today';
+  document.getElementById('selectedConfidence').textContent = current.confidence + '/100';
+  document.getElementById('selectedUnits').textContent = getUnits(current.id);
+  document.getElementById('selectedBalance').textContent = formatGBP(dashboardMarket.user.balance);
+  document.getElementById('listingCount').textContent = dashboardMarket.restaurants.length + ' live';
+}
+
+function tradeListing(action) {
+  const qty = parseInt(document.getElementById('tradeQty').value, 10) || 0;
+  const status = document.getElementById('tradeStatus');
+  const current = dashboardMarket.restaurants.find(r => r.id === selectedListing);
+  if (!current || qty < 1) {
+    status.textContent = 'Enter a valid unit quantity.';
+    status.style.color = 'var(--down)';
+    return;
+  }
+
+  const cost = qty * current.value;
+  const held = getUnits(current.id);
+
+  if (action === 'buy') {
+    if (dashboardMarket.user.balance < cost) {
+      status.textContent = 'Insufficient balance.';
+      status.style.color = 'var(--down)';
+      return;
+    }
+    dashboardMarket.user.balance -= cost;
+    setUnits(current.id, held + qty);
+    status.textContent = 'Bought ' + qty + ' units of ' + current.name + '.';
+    status.style.color = 'var(--accent)';
+  } else {
+    if (held < qty) {
+      status.textContent = 'Insufficient units to sell.';
+      status.style.color = 'var(--down)';
+      return;
+    }
+    dashboardMarket.user.balance += cost;
+    setUnits(current.id, held - qty);
+    status.textContent = 'Sold ' + qty + ' units of ' + current.name + '.';
+    status.style.color = 'var(--accent)';
+  }
+
+  renderTradePanel();
+}
+
+renderListings();
+renderTradePanel();
 </script>
 </body>
 </html>
