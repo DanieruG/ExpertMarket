@@ -11,47 +11,115 @@
 <div class="main">
 <div id="ticker-container"></div>
 <div class="page active" id="dashboard">
-  <div class="topbar"><h1 class="page-title">Market Dashboard</h1></div>
-  <div class="grid grid-4" style="margin-bottom:24px">
-    <div class="card"><div class="card-title">Market Cap</div><div class="stat-value">£42.1M</div><div class="stat-change up">▲ 2.8% today</div></div>
-    <div class="card"><div class="card-title">Active Experts</div><div class="stat-value">2,418</div><div class="stat-change up">▲ 14 new this week</div></div>
-    <div class="card"><div class="card-title">Today's Volume</div><div class="stat-value">£1.2M</div><div class="stat-change up">▲ 18% vs yesterday</div></div>
-    <div class="card"><div class="card-title">AI Alerts</div><div class="stat-value">7</div><div class="stat-change" style="color:var(--gold)">3 high priority</div></div>
+  <div class="topbar">
+    <h1 class="page-title">Market Dashboard</h1>
   </div>
 
-  <div class="listing-grid" style="margin-bottom:24px;">
+  <div class="grid grid-4" style="margin:0 auto 24px;max-width:1120px">
+    <div class="card">
+      <div class="card-title">Market Cap</div>
+      <div class="stat-value">£42.1M</div>
+      <div class="stat-change up">▲ 2.8% today</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Active Experts</div>
+      <div class="stat-value">2,418</div>
+      <div class="stat-change up">▲ 14 new this week</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Today's Volume</div>
+      <div class="stat-value">£1.2M</div>
+      <div class="stat-change up">▲ 18% vs yesterday</div>
+    </div>
+  </div>
+
+  <div class="grid grid-2" style="margin-bottom:24px">
     <div class="card">
       <div class="section-header">
-        <div class="section-title">Restaurant Listings</div>
-        <span class="badge badge-green" id="listingCount">4 live</span>
+        <div class="section-title">🚀 Top Rising Experts</div>
       </div>
-      <div id="listingContainer"></div>
+      <div class="expert-row">
+        <div class="expert-av a4">RK</div>
+        <div class="expert-info"><div class="expert-name">Rajan Kumar</div><div class="expert-niche">Indian Cuisine · London</div></div>
+        <svg class="mini-chart" viewBox="0 0 80 30"><polyline points="0,25 15,20 30,22 45,10 60,14 80,4" fill="none" stroke="var(--accent)" stroke-width="1.5"/></svg>
+        <div class="expert-price"><div>£211.00</div><div class="up" style="font-size:11px">▲ 3.7%</div></div>
+      </div>
+      <div class="expert-row">
+        <div class="expert-av a2">YT</div>
+        <div class="expert-info"><div class="expert-name">Yuki Tanaka</div><div class="expert-niche">Japanese Cuisine · Manchester</div></div>
+        <svg class="mini-chart" viewBox="0 0 80 30"><polyline points="0,22 15,18 30,15 45,12 60,10 80,6" fill="none" stroke="var(--accent)" stroke-width="1.5"/></svg>
+        <div class="expert-price"><div>£142.50</div><div class="up" style="font-size:11px">▲ 2.4%</div></div>
+      </div>
+      <div class="expert-row">
+        <div class="expert-av a3">MR</div>
+        <div class="expert-info"><div class="expert-name">Marco Rossi</div><div class="expert-niche">Italian Fine Dining · Edinburgh</div></div>
+        <svg class="mini-chart" viewBox="0 0 80 30"><polyline points="0,20 15,18 30,14 45,16 60,11 80,8" fill="none" stroke="var(--accent)" stroke-width="1.5"/></svg>
+        <div class="expert-price"><div>£98.20</div><div class="up" style="font-size:11px">▲ 1.1%</div></div>
+      </div>
+      <div class="expert-row">
+        <div class="expert-av a5">AS</div>
+        <div class="expert-info"><div class="expert-name">Amara Sow</div><div class="expert-niche">West African Cuisine · Birmingham</div></div>
+        <svg class="mini-chart" viewBox="0 0 80 30"><polyline points="0,24 15,22 30,18 45,15 60,12 80,7" fill="none" stroke="var(--accent)" stroke-width="1.5"/></svg>
+        <div class="expert-price"><div>£76.80</div><div class="up" style="font-size:11px">▲ 1.8%</div></div>
+      </div>
     </div>
-
     <div class="card">
-      <div class="section-title" style="margin-bottom:12px;">Quick Trade</div>
-      <div class="text-muted" style="font-size:12px; margin-bottom:8px;" id="selectedRestaurantLabel">Selected: Dishoom (dishoom)</div>
-      <div class="value-lg" id="selectedRestaurantValue">£120.00</div>
-      <div class="stat-change up" id="selectedRestaurantChange">▲ 3.63% today</div>
-
-      <div class="divider" style="margin:14px 0;"></div>
-
-      <div class="metric-row"><span class="text-muted">Confidence Score</span><span class="mono" id="selectedConfidence">91/100</span></div>
-      <div class="metric-row"><span class="text-muted">Your Units</span><span class="mono" id="selectedUnits">0</span></div>
-      <div class="metric-row"><span class="text-muted">Balance</span><span class="mono" id="selectedBalance">£2,450.00</span></div>
-
-      <label class="form-label" style="margin-top:12px;">Units</label>
-      <input class="form-input" id="tradeQty" type="number" min="1" value="1">
-
-      <div style="display:flex; gap:10px;">
-        <button class="btn btn-primary" style="flex:1;" onclick="tradeListing('buy')">Buy</button>
-        <button class="btn btn-danger" style="flex:1;" onclick="tradeListing('sell')">Sell</button>
+      <div class="section-header">
+        <div class="section-title">📉 Notable Movers</div>
       </div>
-      <div class="status-msg" id="tradeStatus"></div>
+      <div class="expert-row">
+        <div class="expert-av a1">CB</div>
+        <div class="expert-info"><div class="expert-name">Claire Beaumont</div><div class="expert-niche">French Bistro · London</div></div>
+        <svg class="mini-chart" viewBox="0 0 80 30"><polyline points="0,5 15,8 30,10 45,14 60,18 80,24" fill="none" stroke="var(--accent2)" stroke-width="1.5"/></svg>
+        <div class="expert-price"><div>£67.80</div><div class="down" style="font-size:11px">▼ 0.8%</div></div>
+      </div>
+      <div class="expert-row">
+        <div class="expert-av a1">SG</div>
+        <div class="expert-info"><div class="expert-name">Sofia Garcia</div><div class="expert-niche">Spanish Tapas · Bristol</div></div>
+        <svg class="mini-chart" viewBox="0 0 80 30"><polyline points="0,4 15,8 30,12 45,16 60,22 80,26" fill="none" stroke="var(--accent2)" stroke-width="1.5"/></svg>
+        <div class="expert-price"><div>£55.40</div><div class="down" style="font-size:11px">▼ 2.1%</div></div>
+      </div>
+      <div class="expert-row">
+        <div class="expert-av a1">PT</div>
+        <div class="expert-info"><div class="expert-name">Paul Thompson</div><div class="expert-niche">Pub Grub · Leeds</div></div>
+        <svg class="mini-chart" viewBox="0 0 80 30"><polyline points="0,6 15,10 30,14 45,18 60,20 80,25" fill="none" stroke="var(--accent2)" stroke-width="1.5"/></svg>
+        <div class="expert-price"><div>£31.00</div><div class="down" style="font-size:11px">▼ 3.4%</div></div>
+      </div>
+      <div class="expert-row">
+        <div class="expert-av a1">LN</div>
+        <div class="expert-info"><div class="expert-name">Lena Nowak</div><div class="expert-niche">Vegan · Glasgow</div></div>
+        <svg class="mini-chart" viewBox="0 0 80 30"><polyline points="0,8 15,10 30,14 45,17 60,21 80,24" fill="none" stroke="var(--accent2)" stroke-width="1.5"/></svg>
+        <div class="expert-price"><div>£44.20</div><div class="down" style="font-size:11px">▼ 1.2%</div></div>
+      </div>
     </div>
   </div>
 
-  <div class="card"><div class="section-title">Top Rising Experts</div><p style="color:var(--muted)">Rajan Kumar, Yuki Tanaka, and Marco Rossi are leading today's momentum.</p></div>
+  <div class="grid grid-2" style="margin-bottom:24px">
+    <div class="card">
+      <div class="section-header"><div class="section-title">🔥 Trending Sectors</div></div>
+      <table class="table">
+        <thead><tr><th>Index</th><th>Price</th><th>Change</th><th>Experts</th></tr></thead>
+        <tbody>
+          <tr><td>🇯🇵 Japanese Cuisine</td><td class="mono">£890.30</td><td class="up">▲ 12.4%</td><td><span class="badge badge-blue">48</span></td></tr>
+          <tr><td>🥘 Fine Dining</td><td class="mono">£1,204.00</td><td class="up">▲ 8.1%</td><td><span class="badge badge-blue">31</span></td></tr>
+          <tr><td>🍕 Italian</td><td class="mono">£445.60</td><td class="up">▲ 5.7%</td><td><span class="badge badge-blue">64</span></td></tr>
+          <tr><td>🍜 Budget Eats</td><td class="mono">£340.10</td><td class="down">▼ 2.3%</td><td><span class="badge badge-blue">112</span></td></tr>
+          <tr><td>🌱 Plant-Based</td><td class="mono">£220.80</td><td class="up">▲ 4.2%</td><td><span class="badge badge-blue">29</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="ai-block" style="margin-bottom:16px">
+        <div class="ai-label"><div class="ai-dot"></div> AI Market Summary</div>
+        <div class="ai-text">Japanese cuisine is today's standout sector, driven by Yuki Tanaka's viral Miso omakase verdict. Fine Dining remains buoyant after last week's Michelin announcement. Budget Eats faces headwinds due to rising cost-of-living dampening footfall data. AI suggests diversifying with at least one Index position.</div>
+      </div>
+      <div class="section-title" style="margin-bottom:12px">Quick Actions</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button class="btn btn-primary" style="width:100%" onclick="window.location.href='ai.html'">🤖 Get AI Recommendations</button>
+        <button class="btn btn-outline" style="width:100%" onclick="window.location.href='portfolio.html'">💼 View My Portfolio</button>
+      </div>
+    </div>
+  </div>
 </div>
 </div>
   <script src="navbar.js"></script>
