@@ -8,41 +8,10 @@
 </head>
 <body data-page="stock">
 
-<nav class="sidebar">
-  <div class="sidebar-logo">
-    <div class="logo-text">EM</div>
-    <div class="logo-sub">ExpertMarket</div>
-  </div>
-  <div class="nav-section">
-    <a class="nav-item" href="expertmarket.html"><span>Home</span></a>
-    <a class="nav-item" href="dashboard.html"><span>Dashboard</span></a>
-  </div>
-  <div class="nav-section">
-    <div class="nav-label">Explore</div>
-    <a class="nav-item" href="profile.html"><span>Expert Profile</span></a>
-    <a class="nav-item" href="stock.html"><span>Restaurant Listings</span></a>
-    <a class="nav-item" href="category.html"><span>Categories</span></a>
-    <a class="nav-item" href="review.html"><span>Reviews</span></a>
-  </div>
-  <div class="nav-section">
-    <div class="nav-label">My Account</div>
-    <a class="nav-item" href="ai.html"><span>AI Picks</span></a>
-    <a class="nav-item" href="portfolio.html"><span>Portfolio</span></a>
-    <a class="nav-item" href="ipo.html"><span>Join as Expert</span></a>
-    <a class="nav-item" href="trust.html"><span>Trust and Safety</span></a>
-  </div>
-  <div class="sidebar-bottom">
-    <div class="user-pill">
-      <div class="avatar"></div>
-      <div>
-        <div class="user-name">Alex K.</div>
-        <div class="user-balance" id="sidebarBalance">£1,000.00</div>
-      </div>
-    </div>
-  </div>
-</nav>
-
+<div id="navbar-container"></div>
 <div class="main">
+  <div id="ticker-container"></div>
+
   <div class="page active" id="stock">
     <div class="topbar">
       <div>
@@ -202,8 +171,8 @@
     </div>
   </div>
 </div>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="navbar.js"></script>
 <script>
 const datasets = {
   '1D': { labels: ['09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','Now'], data: [115.40,116.80,117.60,116.90,118.20,119.10,119.70,120.80,120.00] },
@@ -412,7 +381,7 @@ function quickTrade(restaurantId, mode) {
 (function initPage() {
   const navMap = {
     landing: 0, dashboard: 1, profile: 2, stock: 3, category: 4,
-    review: 5, ai: 6, portfolio: 7, ipo: 8, trust: 9
+    review: 5, ai: 6, portfolio: 7, expert_application: 8, trust: 9
   };
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.querySelectorAll('.nav-item')[navMap.stock]?.classList.add('active');

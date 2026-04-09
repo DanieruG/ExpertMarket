@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ExpertMarket — AI Recommendations</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="styles_ai.css">
 </head>
+
 <body data-page="ai">
 
   <div id="navbar-container"></div>
 
   <div class="main">
-  <div id="ticker-container"></div>
+    <div id="ticker-container"></div>
 
     <div class="page active" id="ai">
       <div class="topbar">
@@ -27,7 +27,8 @@
             <div class="info-popup">
               <div class="info-popup-title">What are AI Recommendations?</div>
               <div class="info-popup-text">
-                ExpertMarket makes expert-led investing easier to understand. Below will provide both simple recommendations and plain English explanations, alongside stronger market signals and broader strategic guidance.
+                ExpertMarket makes expert-led investing easier to understand. These recommendations use your interests,
+                city, investing style, and goals to surface the most relevant experts.
               </div>
             </div>
           </div>
@@ -51,12 +52,7 @@
 
           <div class="form-field">
             <label class="form-label" for="cityInput">City</label>
-            <input
-              id="cityInput"
-              class="form-input"
-              type="text"
-              placeholder="Enter your city e.g. London"
-            >
+            <input id="cityInput" class="form-input" type="text" placeholder="Enter your city e.g. London">
           </div>
 
           <div class="form-field">
@@ -83,13 +79,15 @@
             </div>
           </div>
 
-          <button class="btn btn-primary ai-generate-btn" onclick="generateAIPicks()">
+          <button id="generateBtn" class="btn btn-primary ai-generate-btn" onclick="generateAIPicks()">
             Generate AI Picks
           </button>
 
           <p class="info-tip ai-input-note">
             Enter a user type, city, and at least one interest to unlock the AI recommendations.
           </p>
+
+          <p id="aiStatusMessage" class="info-tip ai-input-note" style="display:none;"></p>
         </div>
 
         <div class="ai-block">
@@ -98,15 +96,19 @@
             Get Started
           </div>
           <p class="ai-text">
-            Enter your details and interests to get personalised AI-driven expert recommendations tailored to your investing style and goals. 
+            Enter your details and interests to get personalised AI-driven expert recommendations tailored to your
+            investing style and goals.
           </p>
 
           <div class="divider"></div>
 
           <div class="ai-mini-points">
-            <div class="ai-mini-point"><span class="badge badge-purple">1</span><span>Select your investment experience, goals and interests</span></div>
-            <div class="ai-mini-point"><span class="badge badge-purple">2</span><span>View tailored recommendations</span></div>
-            <div class="ai-mini-point"><span class="badge badge-purple">3</span><span>Make informed investments</span></div>
+            <div class="ai-mini-point"><span class="badge badge-purple">1</span><span>Select your investment experience,
+                goals and interests</span></div>
+            <div class="ai-mini-point"><span class="badge badge-purple">2</span><span>View tailored
+                recommendations</span></div>
+            <div class="ai-mini-point"><span class="badge badge-purple">3</span><span>Click an expert to open their
+                profile</span></div>
           </div>
         </div>
       </div>
@@ -115,38 +117,38 @@
         <div class="ai-block ai-block-summary">
           <div class="ai-label">
             <div class="ai-dot"></div>
-            In Simple Terms
+            AI Recommendation Summary
           </div>
-          <div id="plainEnglishText" class="ai-text"></div>
+          <div id="aiSummaryText" class="ai-text"></div>
         </div>
 
-        <div class="ai-block ai-block-analysis">
-          <div class="ai-label">
-            <div class="ai-dot"></div>
-            AI Analysis
+        <div class="section-header ai-expert-section-head">
+          <div class="section-title">Recommended Experts</div>
+        </div>
+        <div id="expertRecommendations" class="grid grid-3 ai-expert-grid"></div>
+
+        <div class="card ai-results-stack-card">
+          <div class="section-header">
+            <div class="section-title">Suggested Starter Allocation</div>
+            <span class="badge badge-purple">Generated</span>
           </div>
-          <div id="aiAnalysisText" class="ai-text"></div>
+
+          <div id="starterPortfolioIntro" class="ai-text ai-portfolio-intro"></div>
+
+          <div id="starterPortfolio"></div>
+
+          <div id="starterPortfolioReason" class="ai-portfolio-reason"></div>
         </div>
 
         <div class="grid grid-2 ai-results-grid">
           <div class="card">
             <div class="section-header">
-              <div class="section-title">Recommended Experts</div>
-              <span class="badge badge-green">Live Match</span>
+              <div class="section-title">Suggested Indices & Baskets</div>
+              <span class="badge badge-blue">AI Themes</span>
             </div>
-            <div id="expertRecommendations"></div>
+            <div id="suggestedIndices"></div>
           </div>
 
-          <div class="card">
-            <div class="section-header">
-              <div class="section-title">AI Starter Portfolio</div>
-              <span class="badge badge-purple">Generated</span>
-            </div>
-            <div id="starterPortfolio"></div>
-          </div>
-        </div>
-
-        <div class="grid grid-2 ai-results-grid">
           <div class="card">
             <div class="section-header">
               <div class="section-title">Suggested Diversification</div>
@@ -154,46 +156,30 @@
             </div>
             <div id="diversificationText" class="ai-text"></div>
           </div>
+        </div>
 
+        <div class="grid grid-2 ai-results-grid">
           <div class="card">
             <div class="section-header">
               <div class="section-title">Why These Picks?</div>
               <span class="badge badge-gold">Explainable AI</span>
             </div>
-            <div id="whyPicksText" class="ai-text"></div>
-          </div>
-        </div>
-
-        <div class="card ai-market-card">
-          <div class="section-header">
-            <div class="section-title">How This Market Works</div>
-            <span class="badge badge-red">Market Mechanics</span>
+            <div id="whyPicksText"></div>
           </div>
 
-          <div class="grid grid-4 ai-market-grid">
-            <div class="ai-market-box">
-              <div class="card-title">Asset Traded</div>
-              <div class="ai-market-text">Shares in expert credibility, performance, and influence within niche sectors.</div>
+          <div class="card">
+            <div class="section-header">
+              <div class="section-title">Top Match Summary</div>
+              <span class="badge badge-red">Signal</span>
             </div>
-            <div class="ai-market-box">
-              <div class="card-title">Buyers</div>
-              <div class="ai-market-text">Investors seeking early access to trusted, expert-led market insight.</div>
-            </div>
-            <div class="ai-market-box">
-              <div class="card-title">Sellers</div>
-              <div class="ai-market-text">Experts monetising their knowledge, credibility, and market performance.</div>
-            </div>
-            <div class="ai-market-box">
-              <div class="card-title">Price Drivers</div>
-              <div class="ai-market-text">Demand, expert track record, trust signals, niche relevance, and sector momentum.</div>
-            </div>
+            <div id="topMatchSummary" class="ai-text"></div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  
   <script src="navbar.js"></script>
   <script src="ai.js"></script>
 </body>
+
 </html>
