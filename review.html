@@ -1,27 +1,444 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ExpertMarket — Expert Verdict</title>
-<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ExpertMarket — Expert Verdict</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body data-page="review">
-<div id="navbar-container"></div>
-<div class="main">
-<div id="ticker-container"></div>
-<div class="page active" id="review">
-  <div class="topbar"><h1 class="page-title">Expert Verdict</h1></div>
-  <div class="card">
-    <h2 style="font-size:22px;font-weight:800;margin-bottom:4px">Dishoom King's Cross</h2>
-    <div style="color:var(--muted);font-size:13px">by Rajan Kumar - Indian Cuisine - London</div>
-    <div class="review-box" style="margin-top:14px">
-      <p style="font-size:14px;line-height:1.8;color:#c0c8e0">Dishoom continues to deliver on its Irani cafe concept with remarkable consistency. The house black daal remains one of the finest dishes in London.</p>
+  <div id="navbar-container"></div>
+
+  <div class="main">
+    <div id="ticker-container"></div>
+
+    <div class="page active" id="review">
+      <div class="topbar">
+        <h1 class="page-title">Expert Verdict</h1>
+
+        <div class="topbar-actions">
+          <span class="badge badge-green review-status-badge" id="reviewPublishedBadge">Published 2 hrs ago</span>
+          <button type="button" class="btn btn-outline btn-sm" id="demoUnlockBtn">Demo Unlock</button>
+          <button type="button" class="btn btn-outline btn-sm" id="resetUnlockBtn">Reset Demo</button>
+          <a href="profile.html" class="btn btn-primary btn-sm" id="viewExpertBtn">View Expert</a>
+        </div>
+      </div>
+
+      <div class="card review-main-card">
+        <div class="review-header">
+          <div>
+            <h2 class="review-title" id="reviewRestaurant">Dishoom King’s Cross</h2>
+            <div class="review-meta" id="reviewMeta">by Rajan Kumar · Indian Cuisine · Birmingham</div>
+          </div>
+
+          <div class="review-rating-block">
+            <div class="stars" id="reviewStars">★★★★☆</div>
+            <div class="review-score-text" id="reviewRatingText">4.2 / 5.0</div>
+          </div>
+        </div>
+
+        <div class="review-tags" id="reviewTags"></div>
+
+        <div class="review-box">
+          <div class="review-section-label">Overview</div>
+          <p class="review-copy" id="reviewOverview">Loading review overview...</p>
+        </div>
+
+        <div class="locked-box" id="lockedBox">
+          <div class="locked-icon">🔒</div>
+          <div class="locked-title">Investor-Only Content</div>
+          <p class="locked-text" id="lockedText">
+            Unlock the full expert review and investor analysis, including detailed judgement, consistency notes, and premium insight.
+          </p>
+
+          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+            <a href="#" class="btn btn-primary" id="investUnlockBtn">Invest to Unlock</a>
+          </div>
+        </div>
+
+        <div class="review-box premium-review-box" id="expertReviewBox" style="display:none; margin-top:16px;">
+          <div class="review-section-label">Full Expert Review</div>
+          <p class="review-copy" id="expertReviewText">Loading full expert review...</p>
+        </div>
+
+        <div class="review-box premium-review-box" id="premiumReviewBox" style="display:none; margin-top:16px;">
+          <div class="review-section-label">Investor Deep Analysis</div>
+          <p class="review-copy" id="premiumReviewText">Loading premium review...</p>
+        </div>
+      </div>
+
+      <div class="grid grid-3 review-stats-grid">
+        <div class="card review-stat-card">
+          <div class="card-title">Confidence Score</div>
+          <div class="review-stat-value accent-green" id="confidenceScore">92</div>
+          <div class="info-tip" id="confidenceTip">Very High Confidence</div>
+        </div>
+
+        <div class="card review-stat-card">
+          <div class="card-title">Review Freshness</div>
+          <div class="review-stat-value accent-gold" id="reviewFreshness">2h</div>
+          <div class="info-tip">Published today</div>
+        </div>
+
+        <div class="card review-stat-card">
+          <div class="card-title">Predictive Value</div>
+          <div class="review-stat-value accent-purple" id="predictiveValue">High</div>
+          <div class="info-tip" id="predictiveTip">Based on expert trend alignment</div>
+        </div>
+      </div>
+
+      <div class="ai-block review-ai-block">
+        <div class="ai-label">
+          <div class="ai-dot"></div>
+          AI Verdict Analysis
+        </div>
+        <div class="ai-text" id="reviewAiText">Loading AI review analysis...</div>
+      </div>
     </div>
   </div>
-</div>
-</div>
-  <script src="navbar.js"></script>
 
+  <script src="navbar.js"></script>
+  <script>
+    let selectedExpert = null;
+
+    function buildDefaultFeaturedReview(expert) {
+      const mainCategory = expert.categories?.[0] || 'Dining';
+      const secondCategory = expert.categories?.[1] || 'Specialist';
+      const confidence = Number(expert.confidence || 80);
+      const risk = expert.risk || 'Medium';
+      const firstName = expert.name?.split(' ')[0] || 'The expert';
+
+      const restaurantMap = {
+        Japanese: 'Kuro Table',
+        Indian: 'Dishoom King’s Cross',
+        Italian: 'Lina Osteria',
+        'Fine Dining': 'Atelier One',
+        'Street Food': 'Urban Spice Yard',
+        Fusion: 'Canvas Kitchen'
+      };
+
+      const restaurant = restaurantMap[mainCategory] || (mainCategory + ' House');
+      const rating = risk === 'Low' ? 4.4 : risk === 'Medium' ? 4.2 : 4.0;
+      const predictiveValue = confidence >= 90 ? 'High' : confidence >= 84 ? 'Medium' : 'Watch';
+
+      const reviewLibrary = {
+        Japanese: {
+          overview:
+            'A disciplined Japanese venue with strong technical consistency, clear quality signals, and a well-defined proposition.',
+          fullReview:
+            'What I value here most is restraint. The fish is handled carefully, the rice is properly seasoned, and the kitchen avoids the common mistake of trying to impress through excess. This is not the loudest Japanese restaurant in the market, but it is one of the more disciplined. The better dishes show confidence, precision, and enough technical assurance to make the overall experience feel trustworthy rather than performative.',
+          premiumText:
+            firstName + ' would view this as a strong long-term quality signal rather than a short-term trend play. The technical consistency is high, the proposition is clear, and the operation feels built around standards rather than hype. The upside may be steadier than explosive, but that usually supports stronger long-run credibility.'
+        },
+        Indian: {
+          overview:
+            'A high-conviction Indian dining signal with strong depth of flavour, consistency, and a concept that remains dependable under demand.',
+          fullReview:
+            'What I value here is not just flavour, but control. The spices are layered rather than loud, the slow-cooked dishes have genuine depth, and the kitchen shows the kind of confidence that comes from experience rather than imitation. The black daal remains the benchmark order: rich, patient, and properly judged. This is a restaurant that understands how to be popular without becoming careless, which is rarer than it should be.',
+          premiumText:
+            firstName + ' would treat this as a high-conviction venue because the strengths are structural, not accidental. The menu has clear anchors, the identity is recognisable, and repeat visits are likely to confirm rather than weaken the first impression. For investors, that usually means a steadier and more dependable credibility signal.'
+        },
+        Italian: {
+          overview:
+            'A composed Italian operator with lower-volatility appeal, clear strengths, and a reliable execution profile.',
+          fullReview:
+            'The appeal here lies in confidence and simplicity. The pasta is the focal point, and rightly so: textures are well judged, sauces are not overworked, and the kitchen shows the discipline to let ingredients speak. Too many Italian restaurants confuse generosity with heaviness; this one is more composed than that. It feels like a place that understands its strengths and does not wander from them.',
+          premiumText:
+            firstName + ' would see this as a reliable quality operator with lower volatility than more trend-led concepts. The upside may be less dramatic than a buzzy newcomer, but the core strengths look repeatable, which is often more valuable in the long run.'
+        },
+        'Fine Dining': {
+          overview:
+            'An ambitious fine dining venue with strong technical signals, though still sensitive to expectation and sentiment shifts.',
+          fullReview:
+            'There is ambition here, but more importantly there is precision. Courses are thoughtfully paced, the service reads the room well, and the kitchen shows a good understanding of contrast, temperature, and finish. Some dishes reach a little too hard for elegance, but when the restaurant settles into its strengths, it becomes genuinely impressive. This is a serious room with enough technical assurance to justify attention.',
+          premiumText:
+            firstName + ' would regard this as a premium but selective opportunity. The ceiling is high because the standards are evident, though fine dining venues are always more exposed to swings in sentiment and value perception. What gives this one credibility is that the polish is not superficial.'
+        },
+        'Street Food': {
+          overview:
+            'A strong momentum-style concept with authentic flavour signals and high engagement potential, though with greater variability.',
+          fullReview:
+            'The strongest street food operators know exactly what they are trying to do, and this one does. Flavours are direct, portions make sense, and the energy of the food has not been dulled by over-curation. There are rough edges, but in this format that is not always a flaw. What matters is whether the food feels alive, confident, and worth returning for — and here, it does.',
+          premiumText:
+            firstName + ' would read this as a higher-upside venue with authentic strengths, but also with more operational variability than a polished restaurant group. The upside is responsiveness and momentum; the risk is consistency at scale.'
+        },
+        Fusion: {
+          overview:
+            'A more nuanced crossover concept with genuine originality, stronger upside than average, and slightly higher execution risk.',
+          fullReview:
+            'Fusion is often where restaurants hide uncertainty, but this kitchen uses it with purpose. The combinations mostly feel deliberate rather than decorative, and there is enough discipline in the cooking to stop the concept becoming confused. Not every idea lands perfectly, but the better dishes show real imagination backed by technical control. That is a rarer combination than many menus would suggest.',
+          premiumText:
+            firstName + ' would treat this as a more nuanced opportunity. Fusion concepts can generate strong attention when they feel fresh, but they lose credibility quickly when the identity is vague. Here, the stronger dishes suggest there is a real point of view underneath the experimentation.'
+        }
+      };
+
+      const selectedReview = reviewLibrary[mainCategory] || {
+        overview:
+          'A credible venue with repeatable strengths, a clear concept, and a quality profile that appears more durable than accidental.',
+        fullReview:
+          'What stands out here is a sense of control. The concept feels thought through, execution is mostly consistent, and there is enough clarity in the offer to give diners a reason to return. It may not be flawless, but it shows the kind of discipline that usually matters more over time than novelty alone.',
+        premiumText:
+          firstName + ' would view this as a credible venue with strengths that look repeatable rather than accidental. That does not remove risk, but it improves confidence that the current quality level reflects genuine operational competence.'
+      };
+
+      return {
+        restaurant,
+        rating,
+        published: '2 hrs ago',
+        confidenceScore: Math.min(99, confidence + 1),
+        predictiveValue,
+        tags: [
+          mainCategory,
+          secondCategory,
+          expert.badge || 'Featured',
+          risk + ' Risk'
+        ],
+        overview: selectedReview.overview,
+        fullReview: selectedReview.fullReview,
+        investorText:
+          'Unlock the full expert review and investor analysis, including detailed judgement, consistency notes, and premium insight.',
+        premiumText: selectedReview.premiumText
+      };
+    }
+
+    async function loadSelectedExpert() {
+      const params = new URLSearchParams(window.location.search);
+      const expertId = params.get('expert');
+
+      const stored = localStorage.getItem('selectedExpert');
+      const lastSeenId = localStorage.getItem('lastSeenExpertId');
+
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (!expertId || String(parsed.id) === String(expertId)) {
+          localStorage.setItem('lastSeenExpertId', String(parsed.id));
+          return parsed;
+        }
+      }
+
+      const response = await fetch('experts.json');
+      if (!response.ok) throw new Error('Failed to load experts');
+
+      const experts = await response.json();
+      if (!Array.isArray(experts)) throw new Error('Invalid expert data');
+
+      let found = null;
+
+      if (expertId) {
+        found = experts.find(expert => String(expert.id) === String(expertId));
+      }
+
+      if (!found && lastSeenId) {
+        found = experts.find(expert => String(expert.id) === String(lastSeenId));
+      }
+
+      if (!found) {
+        found = experts[0];
+      }
+
+      if (found) {
+        localStorage.setItem('selectedExpert', JSON.stringify(found));
+        localStorage.setItem('lastSeenExpertId', String(found.id));
+      }
+
+      return found;
+    }
+
+    function renderStars(rating) {
+      const rounded = Math.round(rating);
+      return '★'.repeat(rounded) + '☆'.repeat(5 - rounded);
+    }
+
+    function getBadgeClass(tag) {
+      const value = String(tag).toLowerCase();
+
+      if (value.includes('high')) return 'badge badge-purple';
+      if (value.includes('medium')) return 'badge badge-blue';
+      if (value.includes('low')) return 'badge badge-green';
+      if (value.includes('risk')) return 'badge badge-gold';
+      if (value.includes('fine') || value.includes('fusion')) return 'badge badge-blue';
+      if (value.includes('street')) return 'badge badge-purple';
+      if (value.includes('indian')) return 'badge badge-gold';
+      if (value.includes('japanese')) return 'badge badge-green';
+      if (value.includes('italian')) return 'badge badge-red';
+
+      return 'badge badge-green';
+    }
+
+    function getConfidenceLabel(score) {
+      if (score >= 90) return 'Very High Confidence';
+      if (score >= 84) return 'High Confidence';
+      if (score >= 78) return 'Moderate Confidence';
+      return 'Speculative Confidence';
+    }
+
+    function buildAiAnalysis(expert, review) {
+      const categoryText = (expert.categories || []).join(', ').toLowerCase();
+      const riskText = String(expert.risk || 'Medium').toLowerCase();
+      const badgeText = String(expert.badge || 'Featured').toLowerCase();
+
+      return (
+        expert.name +
+        '\'s review profile shows ' +
+        badgeText +
+        ' positioning with a ' +
+        expert.confidence +
+        '/100 confidence score. ' +
+        'This verdict aligns with current ' +
+        categoryText +
+        ' signals and fits a ' +
+        riskText +
+        '-risk profile. ' +
+        'The featured venue appears consistent with the expert’s historical strengths, suggesting useful signal value for users monitoring category momentum and expert credibility.'
+      );
+    }
+
+    function getExpertListingId(expert) {
+      if (expert.listingId) return expert.listingId;
+
+      const nameMap = {
+        'Rajan Kumar': 'dishoom',
+        'Anika Sharma': 'gymkhana',
+        'Marco Ferraro': 'padella',
+        'Giulia Romano': 'padella',
+        'Yuki Tanaka': 'dishoom',
+        'Aiko Sato': 'dishoom',
+        'Claire Bennett': 'gymkhana',
+        'James Laurent': 'gymkhana',
+        'Maya Rahman': 'dishoom',
+        'Leo Carter': 'dishoom',
+        'Noah Park': 'dishoom',
+        'Sana Iqbal': 'gymkhana'
+      };
+
+      return nameMap[expert.name] || 'dishoom';
+    }
+
+    function hasDemoUnlocked(expert) {
+      return localStorage.getItem('demoUnlockedReview_' + expert.id) === 'true';
+    }
+
+    function setDemoUnlocked(expert, value) {
+      localStorage.setItem('demoUnlockedReview_' + expert.id, value ? 'true' : 'false');
+    }
+
+    function updateReviewUnlockState(expert, review) {
+      const unlocked = hasDemoUnlocked(expert);
+
+      const lockedBox = document.getElementById('lockedBox');
+      const expertReviewBox = document.getElementById('expertReviewBox');
+      const premiumReviewBox = document.getElementById('premiumReviewBox');
+      const demoBtn = document.getElementById('demoUnlockBtn');
+      const resetBtn = document.getElementById('resetUnlockBtn');
+
+      if (unlocked) {
+        lockedBox.style.display = 'none';
+        expertReviewBox.style.display = 'block';
+        premiumReviewBox.style.display = 'block';
+
+        document.getElementById('expertReviewText').textContent =
+          review.fullReview || 'Full expert review is now unlocked.';
+
+        document.getElementById('premiumReviewText').textContent =
+          review.premiumText || 'Premium investor review is now unlocked.';
+
+        if (demoBtn) demoBtn.style.display = 'none';
+        if (resetBtn) resetBtn.style.display = 'inline-flex';
+      } else {
+        lockedBox.style.display = 'block';
+        expertReviewBox.style.display = 'none';
+        premiumReviewBox.style.display = 'none';
+
+        if (demoBtn) demoBtn.style.display = 'inline-flex';
+        if (resetBtn) resetBtn.style.display = 'none';
+      }
+    }
+
+    function renderReviewPage(expert) {
+      const review = expert.featuredReview || buildDefaultFeaturedReview(expert);
+      const metaText = 'by ' + expert.name + ' · ' + expert.niche + ' · ' + expert.city;
+
+      document.getElementById('reviewRestaurant').textContent = review.restaurant;
+      document.getElementById('reviewMeta').textContent = metaText;
+      document.getElementById('reviewStars').textContent = renderStars(review.rating);
+      document.getElementById('reviewRatingText').textContent = review.rating.toFixed(1) + ' / 5.0';
+      document.getElementById('reviewPublishedBadge').textContent = 'Published ' + review.published;
+      document.getElementById('reviewOverview').textContent = review.overview;
+      document.getElementById('lockedText').textContent =
+        review.investorText || 'Unlock the full expert review and investor analysis, including detailed judgement, consistency notes, and premium insight.';
+      document.getElementById('confidenceScore').textContent = review.confidenceScore;
+      document.getElementById('confidenceTip').textContent = getConfidenceLabel(review.confidenceScore);
+      document.getElementById('reviewFreshness').textContent = review.published;
+      document.getElementById('predictiveValue').textContent = review.predictiveValue;
+      document.getElementById('predictiveTip').textContent =
+        review.predictiveValue === 'High'
+          ? 'Strong expert-category alignment'
+          : review.predictiveValue === 'Medium'
+          ? 'Balanced signal strength'
+          : 'More speculative opportunity';
+
+      document.getElementById('reviewAiText').textContent = buildAiAnalysis(expert, review);
+
+      document.getElementById('reviewTags').innerHTML = (review.tags || [])
+        .map(tag => '<span class="' + getBadgeClass(tag) + '">' + tag + '</span>')
+        .join('');
+
+      const listingId = getExpertListingId(expert);
+
+      document.getElementById('investUnlockBtn').href =
+        'stock.html?listing=' + encodeURIComponent(listingId) +
+        '&expert=' + encodeURIComponent(expert.id);
+
+      document.getElementById('viewExpertBtn').href =
+        'profile.html?expert=' + encodeURIComponent(expert.id);
+
+      updateReviewUnlockState(expert, review);
+
+      document.getElementById('demoUnlockBtn').onclick = function () {
+        setDemoUnlocked(expert, true);
+        updateReviewUnlockState(expert, review);
+      };
+
+      document.getElementById('resetUnlockBtn').onclick = function () {
+        setDemoUnlocked(expert, false);
+        updateReviewUnlockState(expert, review);
+      };
+
+      document.title = 'ExpertMarket — ' + expert.name + ' Review';
+    }
+
+    (function initPage() {
+      const id = document.body.dataset.page;
+      const ticker = document.getElementById('ticker');
+      if (ticker) ticker.style.display = id === 'landing' ? 'none' : 'block';
+
+      const navMap = {
+        landing: 0,
+        dashboard: 1,
+        profile: 2,
+        stock: 3,
+        category: 4,
+        review: 5,
+        ai: 6,
+        portfolio: 7,
+        expert_application: 8,
+        trust: 9
+      };
+
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.querySelectorAll('.nav-item')[navMap[id]]?.classList.add('active');
+
+      loadSelectedExpert()
+        .then(expert => {
+          selectedExpert = expert;
+          renderReviewPage(expert);
+        })
+        .catch(error => {
+          console.error(error);
+          document.getElementById('reviewOverview').textContent = 'Unable to load review data.';
+          document.getElementById('reviewAiText').textContent = 'Unable to generate AI review analysis.';
+        });
+    })();
+  </script>
 </body>
 </html>
