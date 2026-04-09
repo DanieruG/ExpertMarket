@@ -11,17 +11,188 @@
 <div class="main">
 <div id="ticker-container"></div>
 <div class="page active" id="portfolio">
-  <div class="topbar"><h1 class="page-title">My Portfolio</h1></div>
+  <div class="topbar">
+    <h1 class="page-title">My Portfolio</h1>
+    <div class="topbar-actions">
+      <button class="btn btn-outline btn-sm" onclick="showPage('ai')">🤖 AI Tips</button>
+      <button class="btn btn-primary btn-sm" onclick="showPage('dashboard')">+ Invest More</button>
+    </div>
+  </div>
+
   <div class="portfolio-summary">
-    <div><div class="port-total">£2,450</div><div class="up" style="font-size:14px;margin-top:4px">▲ £142.30 (+6.2%) all time</div></div>
+    <div>
+      <div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Total Portfolio Value</div>
+      <div class="port-total">£2,450</div>
+      <div class="up" style="font-size:14px;margin-top:4px">▲ £142.30 (+6.2%) all time</div>
+    </div>
+    <div class="divider" style="width:1px;height:80px;margin:0"></div>
+    <div style="display:flex;gap:40px">
+      <div><div style="font-size:11px;color:var(--muted)">Today's P&L</div><div style="font-size:22px;font-weight:800;color:var(--accent);font-family:'Syne',sans-serif">+£34.80</div></div>
+      <div><div style="font-size:11px;color:var(--muted)">Positions</div><div style="font-size:22px;font-weight:800;font-family:'Syne',sans-serif">6</div></div>
+      <div><div style="font-size:11px;color:var(--muted)">Cash</div><div style="font-size:22px;font-weight:800;font-family:'Syne',sans-serif">£340</div></div>
+    </div>
+    <div style="margin-left:auto">
+      <div class="ai-block" style="max-width:240px">
+        <div class="ai-label"><div class="ai-dot"></div> AI Portfolio Tip</div>
+        <div class="ai-text" style="font-size:12px">Consider trimming your Claire Beaumont position — declining activity detected. Rotate into Japanese Index for better diversification.</div>
+      </div>
+    </div>
   </div>
-  <div class="card">
-    <div class="section-title" style="margin-bottom:16px">Holdings</div>
-    <table class="table"><thead><tr><th>Expert</th><th>Shares</th><th>Value</th><th>P&L</th></tr></thead><tbody><tr><td>Rajan Kumar</td><td class="mono">4</td><td class="mono">£844</td><td class="up mono">+£184</td></tr></tbody></table>
+
+  <div class="chart-wrap" style="margin-bottom:24px;">
+    <div class="section-header" style="margin-bottom:16px;">
+      <div class="section-title">Market Value Trend</div>
+      <div class="chart-btn-wrap">
+        <button class="tab active" onclick="setRange('1D',this)">1D</button>
+        <button class="tab" onclick="setRange('1W',this)">1W</button>
+        <button class="tab" onclick="setRange('1M',this)">1M</button>
+        <button class="tab" onclick="setRange('3M',this)">3M</button>
+        <button class="tab" onclick="setRange('1Y',this)">1Y</button>
+      </div>
+    </div>
+    <div style="position:relative;width:100%;height:220px;">
+      <canvas id="stockChart" role="img" aria-label="Line chart showing portfolio value over time, currently £2,450.00 and up £34.80 today.">Portfolio value: currently £2,450.00, up £34.80 today.</canvas>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-top:12px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);" id="xLabels"></div>
+  </div>
+
+  <div class="grid grid-2" style="margin-bottom:24px">
+    <div class="card">
+      <div class="section-title" style="margin-bottom:16px">Holdings</div>
+      <table class="table">
+        <thead><tr><th>Expert</th><th>Shares</th><th>Value</th><th>P&L</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div style="font-weight:600">Rajan Kumar</div><div style="font-size:11px;color:var(--muted)">RAJAN.K</div></td>
+            <td class="mono">4</td>
+            <td class="mono">£844</td>
+            <td class="up mono">+£184 (27.8%)</td>
+          </tr>
+          <tr>
+            <td><div style="font-weight:600">Yuki Tanaka</div><div style="font-size:11px;color:var(--muted)">YUKI.J</div></td>
+            <td class="mono">5</td>
+            <td class="mono">£712.50</td>
+            <td class="up mono">+£112.50 (18.8%)</td>
+          </tr>
+          <tr>
+            <td><div style="font-weight:600">JP Cuisine Index</div><div style="font-size:11px;color:var(--muted)">JP-IDX</div></td>
+            <td class="mono">0.5</td>
+            <td class="mono">£445.15</td>
+            <td class="up mono">+£55.15 (14.2%)</td>
+          </tr>
+          <tr>
+            <td><div style="font-weight:600">Claire Beaumont</div><div style="font-size:11px;color:var(--muted)">CLAIRE.B</div></td>
+            <td class="mono">2</td>
+            <td class="mono">£135.60</td>
+            <td class="down mono">−£14.40 (9.6%)</td>
+          </tr>
+          <tr>
+            <td><div style="font-weight:600">Marco Rossi</div><div style="font-size:11px;color:var(--muted)">MARCO.F</div></td>
+            <td class="mono">2</td>
+            <td class="mono">£196.40</td>
+            <td class="up mono">+£36.40 (22.8%)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="section-title" style="margin-bottom:16px">Portfolio Mix</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Indian Cuisine</span><span>34%</span></div><div class="score-bar"><div class="score-fill" style="width:34%;background:var(--gold)"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Japanese Cuisine</span><span>29%</span></div><div class="score-bar"><div class="score-fill" style="width:29%;background:var(--accent)"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Italian</span><span>20%</span></div><div class="score-bar"><div class="score-fill" style="width:20%;background:var(--accent3)"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>French Bistro</span><span>6%</span></div><div class="score-bar"><div class="score-fill" style="width:6%;background:var(--accent2)"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Cash</span><span>14%</span></div><div class="score-bar"><div class="score-fill" style="width:14%;background:var(--muted)"></div></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="section-title" style="margin-bottom:12px">Watchlist</div>
+        <div class="expert-row" style="padding:8px 0">
+          <div class="expert-av a5" style="width:32px;height:32px;font-size:11px">AS</div>
+          <div class="expert-info"><div class="expert-name" style="font-size:13px">Amara Sow</div></div>
+          <span class="up" style="font-size:12px">▲ 1.8%</span>
+        </div>
+        <div class="expert-row" style="padding:8px 0">
+          <div class="expert-av a3" style="width:32px;height:32px;font-size:11px">LN</div>
+          <div class="expert-info"><div class="expert-name" style="font-size:13px">Lena Nowak</div></div>
+          <span class="down" style="font-size:12px">▼ 1.2%</span>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
   <script src="navbar.js"></script>
+  <script>
+const datasets = {
+  '1D': { labels: ['09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','Now'], data: [2415.20,2421.40,2428.60,2422.90,2434.80,2438.10,2442.90,2451.60,2450.00] },
+  '1W': { labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun','Now'], data: [2368.40,2382.30,2394.90,2406.10,2415.20,2431.80,2443.20,2450.00] },
+  '1M': { labels: ['Wk1','Wk2','Wk3','Wk4','Now'], data: [2334.50,2361.20,2398.70,2430.60,2450.00] },
+  '3M': { labels: ['Jan','Feb','Mar','Now'], data: [2307.70,2356.40,2410.20,2450.00] },
+  '1Y': { labels: ['Apr 25','Jun','Aug','Oct','Dec','Feb 26','Now'], data: [2307.70,2328.40,2349.90,2374.60,2398.20,2421.50,2450.00] }
+};
+
+let chart;
+
+function formatCurrency(v) {
+  return '£' + v.toFixed(2);
+}
+
+function buildChart(range) {
+  const { labels, data } = datasets[range];
+  const isUp = data[data.length - 1] >= data[0];
+  const lineColor = isUp ? '#00e5a0' : '#ff4d6d';
+  const fillColor = isUp ? 'rgba(0,229,160,0.08)' : 'rgba(255,77,109,0.08)';
+  if (chart) chart.destroy();
+  chart = new Chart(document.getElementById('stockChart'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        data,
+        borderColor: lineColor,
+        borderWidth: 2,
+        backgroundColor: fillColor,
+        fill: true,
+        tension: 0.4,
+        pointRadius: 0,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: lineColor
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#0d1120', borderColor: '#1e2540', borderWidth: 1,
+          titleColor: '#6b7280', bodyColor: '#e8eaf0',
+          callbacks: { label: ctx => '  Portfolio ' + formatCurrency(ctx.parsed.y) }
+        }
+      },
+      scales: {
+        x: { grid: { color: 'rgba(30,37,64,0.6)' }, ticks: { color: '#6b7280', font: { size: 11, family: 'DM Mono' } } },
+        y: {
+          position: 'right', grid: { color: 'rgba(30,37,64,0.6)' },
+          ticks: { color: '#6b7280', font: { size: 11, family: 'DM Mono' }, callback: v => '£' + v.toFixed(0) }
+        }
+      }
+    }
+  });
+}
+
+function setRange(range, el) {
+  document.querySelectorAll('.chart-btn-wrap .tab').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  buildChart(range);
+}
+
+buildChart('1D');
+  </script>
 
 </body>
 </html>

@@ -12,28 +12,127 @@
 <div id="ticker-container"></div>
 <div class="page active" id="landing">
   <div class="hero">
-    <div class="hero-eyebrow">The World's First Expert Trading Platform</div>
+    <div class="hero-eyebrow">🚀 The World's First Expert Trading Platform</div>
     <h1 class="hero-title">Invest in the People<br>Who <span>Actually Know</span><br>Their Stuff</h1>
     <p class="hero-sub">ExpertMarket turns verified expert opinions into tradeable assets. Buy into credibility, track influence, profit from expertise.</p>
     <div class="hero-ctas">
-      <a class="btn btn-primary btn-hero" href="dashboard.html">Explore the Market</a>
-      <a class="btn btn-outline btn-hero" href="expert_application.html">Become an Expert</a>
+      <button class="btn btn-primary btn-hero" onclick="showPage('dashboard')">Explore the Market</button>
+      <button class="btn btn-outline btn-hero" onclick="showPage('landing')">Watch Demo ▶</button>
     </div>
     <div class="hero-stats">
-      <div><div class="hero-stat-num">2,400+</div><div class="hero-stat-label">Verified Experts</div></div>
-      <div><div class="hero-stat-num">£4.2M</div><div class="hero-stat-label">Daily Volume</div></div>
-      <div><div class="hero-stat-num">94%</div><div class="hero-stat-label">Review Accuracy</div></div>
+      <div>
+        <div class="hero-stat-num">2,400+</div>
+        <div class="hero-stat-label">Verified Experts</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">£4.2M</div>
+        <div class="hero-stat-label">Daily Volume</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">94%</div>
+        <div class="hero-stat-label">Review Accuracy</div>
+      </div>
+    </div>
+    <div class="hero-grid">
+      <div class="floating-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div>
+            <div style="font-size:12px;color:var(--muted)">TOP EXPERT</div>
+            <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:16px">Rajan Kumar</div>
+            <div style="font-size:12px;color:var(--muted)">Indian Cuisine · London</div>
+          </div>
+          <span class="badge badge-green">▲ 3.7%</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:12px;align-items:center">
+          <div style="font-family:'DM Mono',monospace;font-size:20px;font-weight:700">£211.00</div>
+          <svg width="80" height="30" viewBox="0 0 80 30"><polyline points="0,25 15,20 30,22 45,10 60,14 80,4" fill="none" stroke="var(--accent)" stroke-width="2"/></svg>
+        </div>
+      </div>
+      <div class="floating-card">
+        <div style="font-size:12px;color:var(--accent3);font-weight:700;letter-spacing:1px;margin-bottom:8px">🤖 AI ALERT</div>
+        <div style="font-size:13px">Japanese Cuisine Index trending up +1.9% - Yuki Tanaka published 3 new reviews</div>
+      </div>
+      <div class="floating-card">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:6px">CREDIBILITY SCORE</div>
+        <div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--accent)">94 / 100</div>
+        <div class="score-bar" style="margin-top:8px"><div class="score-fill" style="width:94%;background:var(--accent)"></div></div>
+        <div style="font-size:11px;color:var(--muted);margin-top:6px">Michelin-verified · 8 years experience</div>
+      </div>
     </div>
   </div>
+
   <div class="landing-section" style="background: var(--surface); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
     <div class="section-eyebrow">The Problem</div>
     <h2 class="landing-h2">Trust in Online Reviews<br>is Broken</h2>
-    <p style="color:var(--muted);max-width:520px;font-size:16px;line-height:1.8">42% of online reviews are fake. Anonymous reviewers have zero accountability.</p>
+    <p style="color:var(--muted);max-width:520px;font-size:16px;line-height:1.8">42% of online reviews are fake. Anonymous reviewers have zero accountability. There's no way to verify anyone's expertise - until now.</p>
+    <div class="trust-grid">
+      <div class="trust-card">
+        <div class="trust-icon">🎭</div>
+        <h4>Fake Reviews Everywhere</h4>
+        <p>Platforms are flooded with paid and bot reviews that mislead consumers and damage honest businesses.</p>
+      </div>
+      <div class="trust-card">
+        <div class="trust-icon">🔍</div>
+        <h4>No Credential Checks</h4>
+        <p>Anyone can claim to be a food expert. There's no system to verify professional background or real experience.</p>
+      </div>
+      <div class="trust-card">
+        <div class="trust-icon">💸</div>
+        <h4>Zero Incentive for Quality</h4>
+        <p>Reviewers don't benefit from being right. Our market creates real financial stakes tied to accuracy.</p>
+      </div>
+    </div>
   </div>
+
+  <div class="landing-section">
+    <div class="section-eyebrow">How It Works</div>
+    <h2 class="landing-h2">Expert Opinions as<br>Tradeable Assets</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:40px">
+      <div>
+        <div style="display:flex;flex-direction:column;gap:24px">
+          <div style="display:flex;gap:16px">
+            <div style="width:36px;height:36px;border-radius:50%;background:rgba(0,229,160,0.1);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;color:var(--accent);font-weight:800;flex-shrink:0">1</div>
+            <div><h4 style="margin-bottom:4px">Experts Verify & List</h4><p style="color:var(--muted);font-size:13px">Professionals submit credentials, get AI-verified, and IPO on the platform with a starting share price.</p></div>
+          </div>
+          <div style="display:flex;gap:16px">
+            <div style="width:36px;height:36px;border-radius:50%;background:rgba(123,97,255,0.1);border:1px solid var(--accent3);display:flex;align-items:center;justify-content:center;color:var(--accent3);font-weight:800;flex-shrink:0">2</div>
+            <div><h4 style="margin-bottom:4px">Investors Buy Shares</h4><p style="color:var(--muted);font-size:13px">Users invest in experts they trust. Demand drives price. More followers = higher market cap.</p></div>
+          </div>
+          <div style="display:flex;gap:16px">
+            <div style="width:36px;height:36px;border-radius:50%;background:rgba(245,197,66,0.1);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;color:var(--gold);font-weight:800;flex-shrink:0">3</div>
+            <div><h4 style="margin-bottom:4px">Reviews Drive Value</h4><p style="color:var(--muted);font-size:13px">When an expert's verdict proves accurate, their AI credibility score rises - and so does their price.</p></div>
+          </div>
+          <div style="display:flex;gap:16px">
+            <div style="width:36px;height:36px;border-radius:50%;background:rgba(255,77,109,0.1);border:1px solid var(--accent2);display:flex;align-items:center;justify-content:center;color:var(--accent2);font-weight:800;flex-shrink:0">4</div>
+            <div><h4 style="margin-bottom:4px">Everyone Benefits</h4><p style="color:var(--muted);font-size:13px">Investors profit, experts gain reputation, businesses get trustworthy coverage. Aligned incentives.</p></div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:10px">TRENDING SECTORS</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px">🇯🇵 Japanese Cuisine</span><span class="badge badge-green">▲ 12.4%</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px">🥘 Fine Dining</span><span class="badge badge-green">▲ 8.1%</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px">🍜 Budget Eats</span><span class="badge badge-red">▼ 2.3%</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px">🍕 Italian</span><span class="badge badge-green">▲ 5.7%</span></div>
+          </div>
+        </div>
+        <div class="ai-block">
+          <div class="ai-label"><div class="ai-dot"></div> AI Market Insight</div>
+          <div class="ai-text">Japanese cuisine experts are seeing a surge following the Cherry Blossom dining season. Rajan Kumar's recent Curry Mile review went viral - his share price jumped 14% in 48 hours.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="cta-banner">
     <h2>Ready to Trade on Expertise?</h2>
     <p>Join 12,000+ investors already profiting from verified opinion.</p>
-    <a class="btn btn-primary btn-hero" href="dashboard.html">Start Investing</a>
+    <div style="display:flex;gap:14px;justify-content:center">
+      <button class="btn btn-primary btn-hero" onclick="showPage('dashboard')">Start Investing</button>
+      <button class="btn btn-outline btn-hero" onclick="showPage('ipo')">Become an Expert</button>
+    </div>
   </div>
 </div>
 </div>

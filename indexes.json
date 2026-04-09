@@ -1,0 +1,68 @@
+[
+  {
+    "id": "japanese-cuisine",
+    "name": "Japanese Cuisine",
+    "description": "High-conviction index focused on precision-led Japanese concepts with consistent demand and premium ticket resilience.",
+    "category": "Cuisine",
+    "riskLevel": "Medium",
+    "performance30d": 12.4,
+    "experts": ["Alex K.", "Kenji W.", "Mina S.", "Riku T."],
+    "isInvested": false,
+    "currency": "GBP"
+  },
+  {
+    "id": "fine-dining",
+    "name": "Fine Dining",
+    "description": "Selective index of luxury-led operators benefiting from experiential spend and strong review momentum.",
+    "category": "Premium",
+    "riskLevel": "Medium",
+    "performance30d": 8.1,
+    "experts": ["Elena R.", "Marco D.", "Sophie L.", "Noah C."],
+    "isInvested": false,
+    "currency": "GBP"
+  },
+  {
+    "id": "italian",
+    "name": "Italian",
+    "description": "Broad Italian basket balancing neighborhood staples with upscale formats for steady mid-risk exposure.",
+    "category": "Cuisine",
+    "riskLevel": "Low",
+    "performance30d": 5.7,
+    "experts": ["Giulia M.", "Tom A.", "Francesco P.", "Nina Patel"],
+    "isInvested": false,
+    "currency": "GBP"
+  },
+  {
+    "id": "budget-eats",
+    "name": "Budget Eats",
+    "description": "Value-first chain and independent mix exposed to margin pressure but attractive for contrarian entries.",
+    "category": "Value",
+    "riskLevel": "High",
+    "performance30d": -2.3,
+    "experts": ["Liam Cooper", "Sara I.", "Rahul B.", "Jonas Meyer"],
+    "isInvested": false,
+    "currency": "GBP"
+  },
+  {
+    "id": "plant-based",
+    "name": "Plant-Based",
+    "description": "Emerging growth index tracking health-forward brands with strong demographic tailwinds.",
+    "category": "Growth",
+    "riskLevel": "Medium",
+    "performance30d": 4.2,
+    "experts": ["Maya Singh", "Ava N.", "Daniel H.", "Priya K."],
+    "isInvested": false,
+    "currency": "GBP"
+  },
+  {
+    "id": "wine-sommelier",
+    "name": "Wine & Sommelier",
+    "description": "Niche exposure to wine-program-heavy concepts with premium upsell economics.",
+    "category": "Specialist",
+    "riskLevel": "Low",
+    "performance30d": 1.9,
+    "experts": ["Chloe V.", "Matteo F.", "Iris G.", "Owen J."],
+    "isInvested": false,
+    "currency": "GBP"
+  }
+]

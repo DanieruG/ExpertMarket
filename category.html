@@ -11,15 +11,89 @@
 <div class="main">
 <div id="ticker-container"></div>
 <div class="page active" id="category">
-  <div class="topbar"><h1 class="page-title">Sector Indices</h1></div>
-  <div class="grid grid-3">
-    <div class="cat-card"><div class="cat-icon">JP</div><div class="cat-name">Japanese Cuisine</div><div class="mono" style="font-size:18px;font-weight:700">£890.30</div><span class="badge badge-green">▲ 12.4%</span></div>
-    <div class="cat-card"><div class="cat-icon">FD</div><div class="cat-name">Fine Dining</div><div class="mono" style="font-size:18px;font-weight:700">£1,204.00</div><span class="badge badge-green">▲ 8.1%</span></div>
-    <div class="cat-card"><div class="cat-icon">IT</div><div class="cat-name">Italian</div><div class="mono" style="font-size:18px;font-weight:700">£445.60</div><span class="badge badge-green">▲ 5.7%</span></div>
+  <div class="topbar">
+    <h1 class="page-title">Sector Indices</h1>
+    <div class="topbar-actions">
+    </div>
+  </div>
+
+  <div class="ai-block" style="margin-bottom:24px">
+    <div class="ai-label"><div class="ai-dot"></div> AI Trend Summary</div>
+    <div class="ai-text">Japanese Cuisine and Fine Dining are today's outperformers. Budget Eats faces sector headwinds. AI recommends considering a basket position in Plant-Based ahead of upcoming health trend cycle. Diversifying across 3+ indices reduces volatility by an estimated 40%.</div>
+  </div>
+
+  <div class="grid grid-3" style="margin-bottom:24px">
+    <div class="cat-card" data-index-id="japanese-cuisine">
+      <div class="cat-icon">🇯🇵</div>
+      <div class="cat-name">Japanese Cuisine</div>
+      <div class="cat-count">48 experts · Est. 2023</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+        <div class="mono" style="font-size:18px;font-weight:700">£890.30</div>
+        <span class="badge badge-green">▲ 12.4%</span>
+      </div>
+      <div class="score-bar" style="margin-top:8px"><div class="score-fill" style="width:82%;background:var(--accent)"></div></div>
+      <button class="btn btn-primary btn-sm" style="width:100%;margin-top:12px" data-index-id="japanese-cuisine">Invest in Index</button>
+    </div>
+    <div class="cat-card" data-index-id="fine-dining">
+      <div class="cat-icon">🥘</div>
+      <div class="cat-name">Fine Dining</div>
+      <div class="cat-count">31 experts · Est. 2023</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+        <div class="mono" style="font-size:18px;font-weight:700">£1,204.00</div>
+        <span class="badge badge-green">▲ 8.1%</span>
+      </div>
+      <div class="score-bar" style="margin-top:8px"><div class="score-fill" style="width:74%;background:var(--accent)"></div></div>
+      <button class="btn btn-primary btn-sm" style="width:100%;margin-top:12px" data-index-id="fine-dining">Invest in Index</button>
+    </div>
+    <div class="cat-card" data-index-id="italian">
+      <div class="cat-icon">🍕</div>
+      <div class="cat-name">Italian</div>
+      <div class="cat-count">64 experts · Est. 2023</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+        <div class="mono" style="font-size:18px;font-weight:700">£445.60</div>
+        <span class="badge badge-green">▲ 5.7%</span>
+      </div>
+      <div class="score-bar" style="margin-top:8px"><div class="score-fill" style="width:60%;background:var(--accent)"></div></div>
+      <button class="btn btn-primary btn-sm" style="width:100%;margin-top:12px" data-index-id="italian">Invest in Index</button>
+    </div>
+    <div class="cat-card" data-index-id="budget-eats">
+      <div class="cat-icon">🍜</div>
+      <div class="cat-name">Budget Eats</div>
+      <div class="cat-count">112 experts · Est. 2023</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+        <div class="mono" style="font-size:18px;font-weight:700">£340.10</div>
+        <span class="badge badge-red">▼ 2.3%</span>
+      </div>
+      <div class="score-bar" style="margin-top:8px"><div class="score-fill" style="width:40%;background:var(--accent2)"></div></div>
+      <button class="btn btn-outline btn-sm" style="width:100%;margin-top:12px" data-index-id="budget-eats">View Index</button>
+    </div>
+    <div class="cat-card" data-index-id="plant-based">
+      <div class="cat-icon">🌱</div>
+      <div class="cat-name">Plant-Based</div>
+      <div class="cat-count">29 experts · Est. 2024</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+        <div class="mono" style="font-size:18px;font-weight:700">£220.80</div>
+        <span class="badge badge-green">▲ 4.2%</span>
+      </div>
+      <div class="score-bar" style="margin-top:8px"><div class="score-fill" style="width:55%;background:var(--accent)"></div></div>
+      <button class="btn btn-primary btn-sm" style="width:100%;margin-top:12px" data-index-id="plant-based">Invest in Index</button>
+    </div>
+    <div class="cat-card" data-index-id="wine-sommelier">
+      <div class="cat-icon">🍷</div>
+      <div class="cat-name">Wine & Sommelier</div>
+      <div class="cat-count">22 experts · Est. 2024</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+        <div class="mono" style="font-size:18px;font-weight:700">£188.40</div>
+        <span class="badge badge-green">▲ 1.9%</span>
+      </div>
+      <div class="score-bar" style="margin-top:8px"><div class="score-fill" style="width:48%;background:var(--accent)"></div></div>
+      <button class="btn btn-outline btn-sm" style="width:100%;margin-top:12px" data-index-id="wine-sommelier">View Index</button>
+    </div>
   </div>
 </div>
 </div>
   <script src="navbar.js"></script>
+  <script src="category.js"></script>
 
 </body>
 </html>
