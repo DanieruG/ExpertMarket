@@ -1,23 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ExpertMarket — Restaurant Listing</title>
-<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ExpertMarket — Restaurant Listing</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body data-page="stock">
 
 <div id="navbar-container"></div>
+
 <div class="main">
   <div id="ticker-container"></div>
 
   <div class="page active" id="stock">
     <div class="topbar">
       <div>
-        <div style="font-size:12px;color:var(--muted);margin-bottom:4px;font-family:'DM Mono',monospace;" id="restaurantSlug">DISHOOM · Restaurant ID dishoom</div>
+        <div
+          style="font-size:12px;color:var(--muted);margin-bottom:4px;font-family:'DM Mono',monospace;"
+          id="restaurantSlug"
+        >
+          DISHOOM · Restaurant ID dishoom
+        </div>
         <h1 class="page-title" id="restaurantTitle">Dishoom Verdict Listing</h1>
       </div>
+
       <div style="display:flex;gap:10px;align-items:center;">
         <button class="btn btn-outline btn-sm">+ Watchlist</button>
         <button class="btn btn-primary" onclick="document.getElementById('buyQty').focus()">Buy Units</button>
@@ -25,42 +32,85 @@
     </div>
 
     <div class="profile-hero">
-      <div class="profile-av-lg">RK</div>
+      <div class="profile-av-lg" id="expertAvatar">RK</div>
+
       <div style="flex:1;">
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
-          <span style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;">Rajan Kumar</span>
+          <span
+            style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;"
+            id="expertName"
+          >
+            Rajan Kumar
+          </span>
           <span class="verified-badge">✓ Verified Food Analyst</span>
-          <span class="badge badge-gold">Top 1%</span>
+          <span class="badge badge-gold" id="expertBadge">Top Rated</span>
         </div>
-        <div style="font-size:13px;color:var(--muted);margin-bottom:10px;">Senior Restaurant Evaluator · 14 yrs experience · Michelin Network Contributor</div>
-        <div>
-          <span class="cred-pill">Fine Dining</span>
-          <span class="cred-pill">Indian Cuisine</span>
-          <span class="cred-pill">Service Quality</span>
-          <span class="cred-pill">Value Score</span>
+
+        <div
+          style="font-size:13px;color:var(--muted);margin-bottom:10px;"
+          id="expertMeta"
+        >
+          Indian & South Asian Cuisine · Birmingham
+        </div>
+
+        <div id="expertTagWrap">
+          <span class="cred-pill">Indian</span>
+          <span class="cred-pill">Street Food</span>
         </div>
       </div>
+
       <div style="text-align:right;flex-shrink:0;">
-        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Verdict Accuracy</div>
-        <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--accent);">91%</div>
-        <div style="font-size:11px;color:var(--muted);">648 verdicts tracked</div>
+        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">
+          Verdict Accuracy
+        </div>
+        <div
+          style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--accent);"
+          id="expertConfidence"
+        >
+          94%
+        </div>
+        <div style="font-size:11px;color:var(--muted);" id="expertTracked">
+          561 verdicts tracked
+        </div>
       </div>
     </div>
 
     <div class="stock-header">
       <div>
-        <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:6px;" id="headerListingLabel">DISHOOM · Listing Market Value</div>
+        <div
+          style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:6px;"
+          id="headerListingLabel"
+        >
+          DISHOOM · Listing Market Value
+        </div>
+
         <div class="price-big">
           <div class="stock-price" id="livePrice">£120.00</div>
-          <div class="change-pill badge-green up" id="valueDelta" style="background:rgba(0,229,160,0.12);">▲ £4.20 · +3.63%</div>
+          <div
+            class="change-pill badge-green up"
+            id="valueDelta"
+            style="background:rgba(0,229,160,0.12);"
+          >
+            ▲ £4.20 · +3.63%
+          </div>
         </div>
-        <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-top:8px;" id="listingMeta">
-          Confidence 91/100 &nbsp;·&nbsp; Rating 4.7/5 &nbsp;·&nbsp; 24h Trades 3,218 units
+
+        <div
+          style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-top:8px;"
+          id="listingMeta"
+        >
+          Confidence 91/100 · Rating 4.7/5 · 24h Trades 3,218 units
         </div>
       </div>
+
       <div style="text-align:right;">
         <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">Listing Pool Value</div>
-        <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;" id="poolValue">£2.40M</div>
+        <div
+          style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;"
+          id="poolValue"
+        >
+          £2.40M
+        </div>
         <div style="font-size:11px;color:var(--muted);margin-top:6px;">Units outstanding: 20,000</div>
       </div>
     </div>
@@ -76,101 +126,215 @@
           <button class="tab" onclick="setRange('1Y',this)">1Y</button>
         </div>
       </div>
+
       <div style="position:relative;width:100%;height:220px;">
-        <canvas id="stockChart" role="img" aria-label="Line chart showing Dishoom listing market value over time, currently £120.00 with a 3.63% increase today.">Dishoom listing value: currently £120.00, up 3.63% today.</canvas>
+        <canvas
+          id="stockChart"
+          role="img"
+          aria-label="Line chart showing restaurant listing market value."
+        ></canvas>
       </div>
-      <div style="display:flex;justify-content:space-between;margin-top:12px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);" id="xLabels"></div>
+
+      <div
+        style="display:flex;justify-content:space-between;margin-top:12px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);"
+        id="xLabels"
+      ></div>
     </div>
 
     <div class="grid grid-4" style="margin-bottom:20px;">
-      <div class="card"><div class="card-title">All-time Confidence</div><div class="stat-value up">+42 pts</div><div class="stat-change up">Since listing launch</div></div>
-      <div class="card"><div class="card-title">30D Rating Move</div><div class="stat-value up">+0.6</div><div class="stat-change up">▲ vs category +0.2</div></div>
-      <div class="card"><div class="card-title">Active Traders</div><div class="stat-value">1,042</div><div class="stat-change up">▲ 38 this week</div></div>
-      <div class="card"><div class="card-title">Review Yield</div><div class="stat-value" style="color:var(--gold);">4.7/5</div><div class="stat-change" style="color:var(--muted);">Weighted from 6,842 reviews</div></div>
+      <div class="card">
+        <div class="card-title">All-time Confidence</div>
+        <div class="stat-value up" id="allTimeConfidence">+42 pts</div>
+        <div class="stat-change up">Since listing launch</div>
+      </div>
+      <div class="card">
+        <div class="card-title">30D Rating Move</div>
+        <div class="stat-value up" id="ratingMove30d">+0.6</div>
+        <div class="stat-change up">▲ vs category +0.2</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Active Traders</div>
+        <div class="stat-value" id="activeTraders">1,042</div>
+        <div class="stat-change up">▲ 38 this week</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Review Yield</div>
+        <div class="stat-value" style="color:var(--gold);" id="reviewYield">4.7/5</div>
+        <div class="stat-change" style="color:var(--muted);" id="reviewYieldMeta">Weighted from 6,842 reviews</div>
+      </div>
     </div>
 
     <div class="grid grid-2" style="margin-bottom:20px;">
       <div>
         <div class="card" style="margin-bottom:20px;">
-          <div class="section-header"><div class="section-title">Performance Metrics</div></div>
-          <div style="margin-bottom:14px;">
-            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;"><span style="color:var(--muted);">Verdict Accuracy</span><span class="mono up">91%</span></div>
-            <div class="score-bar"><div class="score-fill" style="width:91%;background:var(--accent);"></div></div>
+          <div class="section-header">
+            <div class="section-title">Performance Metrics</div>
           </div>
+
           <div style="margin-bottom:14px;">
-            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;"><span style="color:var(--muted);">Diner Sentiment Growth</span><span class="mono" style="color:var(--gold);">78%</span></div>
-            <div class="score-bar"><div class="score-fill" style="width:78%;background:var(--gold);"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;">
+              <span style="color:var(--muted);">Verdict Accuracy</span>
+              <span class="mono up" id="metricConfidenceText">91%</span>
+            </div>
+            <div class="score-bar">
+              <div class="score-fill" id="metricConfidenceBar" style="width:91%;background:var(--accent);"></div>
+            </div>
           </div>
+
           <div style="margin-bottom:14px;">
-            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;"><span style="color:var(--muted);">Community Engagement</span><span class="mono" style="color:var(--accent3);">84%</span></div>
-            <div class="score-bar"><div class="score-fill" style="width:84%;background:var(--accent3);"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;">
+              <span style="color:var(--muted);">Diner Sentiment Growth</span>
+              <span class="mono" style="color:var(--gold);" id="metricSentimentText">78%</span>
+            </div>
+            <div class="score-bar">
+              <div class="score-fill" id="metricSentimentBar" style="width:78%;background:var(--gold);"></div>
+            </div>
           </div>
+
+          <div style="margin-bottom:14px;">
+            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;">
+              <span style="color:var(--muted);">Community Engagement</span>
+              <span class="mono" style="color:var(--accent3);" id="metricEngagementText">84%</span>
+            </div>
+            <div class="score-bar">
+              <div class="score-fill" id="metricEngagementBar" style="width:84%;background:var(--accent3);"></div>
+            </div>
+          </div>
+
           <div>
-            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;"><span style="color:var(--muted);">Volatility Risk</span><span class="mono" style="color:var(--down);">Low</span></div>
-            <div class="score-bar"><div class="score-fill" style="width:28%;background:var(--down);"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;">
+              <span style="color:var(--muted);">Volatility Risk</span>
+              <span class="mono" style="color:var(--down);" id="metricRiskText">Low</span>
+            </div>
+            <div class="score-bar">
+              <div class="score-fill" id="metricRiskBar" style="width:28%;background:var(--down);"></div>
+            </div>
           </div>
         </div>
 
         <div class="ai-block">
           <div class="ai-label"><div class="ai-dot"></div>AI Analysis · ExpertMarket</div>
-          <div class="ai-text">Dishoom shows steady upward momentum in expert confidence after a strong service-consistency verdict this quarter. Demand from long-horizon traders is rising while downside volatility remains moderate. Consider staggered entries since listing value is near its recent high.</div>
+          <div class="ai-text" id="aiAnalysisText">
+            Dishoom shows steady upward momentum in expert confidence after a strong service-consistency verdict this quarter.
+          </div>
         </div>
       </div>
 
       <div>
         <div class="order-box" style="margin-bottom:20px;">
           <div class="section-title" style="margin-bottom:16px;">Trade Listing Units</div>
+
           <div class="tabs" style="margin-bottom:16px;">
             <button class="tab active" id="buyTab" onclick="switchOrder('buy')">Buy</button>
             <button class="tab" id="sellTab" onclick="switchOrder('sell')">Sell</button>
           </div>
-          <div style="font-size:12px;color:var(--muted);margin-bottom:12px;" id="selectedListingOut">Selected: Dishoom (dishoom)</div>
+
+          <div style="font-size:12px;color:var(--muted);margin-bottom:12px;" id="selectedListingOut">
+            Selected: Dishoom (dishoom)
+          </div>
+
           <label class="form-label">Number of Units</label>
           <input class="form-input" type="number" id="buyQty" value="2" min="1" oninput="updateOrder()" placeholder="0">
+
           <label class="form-label">Order Type</label>
           <select class="form-input" style="cursor:pointer;appearance:none;">
             <option>Market Order</option>
             <option>Limit Order</option>
           </select>
+
           <div class="divider"></div>
-          <div class="order-total"><span style="color:var(--muted);font-size:13px;">Unit Market Value</span><span class="mono" id="unitPriceOut">£120.00</span></div>
-          <div class="order-total"><span style="color:var(--muted);font-size:13px;">Platform Fee (0.5%)</span><span class="mono" id="feeOut">£1.20</span></div>
-          <div class="order-total"><span style="color:var(--muted);font-size:13px;">Your Units</span><span class="mono" id="holdingOut">5</span></div>
+
+          <div class="order-total">
+            <span style="color:var(--muted);font-size:13px;">Unit Market Value</span>
+            <span class="mono" id="unitPriceOut">£120.00</span>
+          </div>
+
+          <div class="order-total">
+            <span style="color:var(--muted);font-size:13px;">Platform Fee (0.5%)</span>
+            <span class="mono" id="feeOut">£1.20</span>
+          </div>
+
+          <div class="order-total">
+            <span style="color:var(--muted);font-size:13px;">Your Units</span>
+            <span class="mono" id="holdingOut">5</span>
+          </div>
+
           <div class="divider"></div>
-          <div class="order-total"><span style="font-weight:700;font-family:'Syne',sans-serif;" id="totalLabel">Total Cost</span><span class="mono" style="font-size:18px;font-weight:700;color:var(--accent);" id="totalOut">£241.20</span></div>
-          <button class="btn btn-primary" style="width:100%;margin-top:12px;padding:12px;" id="orderBtn" onclick="placeOrder()">Buy 2 Units · £241.20</button>
-          <div style="font-size:11px;color:var(--muted);margin-top:8px;text-align:center;" id="balanceLine">Balance: £1,000.00 · After trade: £758.80</div>
+
+          <div class="order-total">
+            <span style="font-weight:700;font-family:'Syne',sans-serif;" id="totalLabel">Total Cost</span>
+            <span class="mono" style="font-size:18px;font-weight:700;color:var(--accent);" id="totalOut">£241.20</span>
+          </div>
+
+          <button class="btn btn-primary" style="width:100%;margin-top:12px;padding:12px;" id="orderBtn" onclick="placeOrder()">
+            Buy 2 Units · £241.20
+          </button>
+
+          <div style="font-size:11px;color:var(--muted);margin-top:8px;text-align:center;" id="balanceLine">
+            Balance: £1,000.00 · After trade: £758.80
+          </div>
+
           <div class="status-msg" id="orderMsg"></div>
         </div>
 
         <div class="card">
-          <div class="section-header"><div class="section-title">Similar Restaurant Listings</div></div>
+          <div class="section-header">
+            <div class="section-title">Similar Restaurant Listings</div>
+          </div>
+
           <div class="expert-row">
             <div class="expert-av" style="background:linear-gradient(135deg,#00e5a022,#00e5a044);color:var(--accent);">DI</div>
-            <div class="expert-info"><div class="expert-name">Dishoom</div><div class="expert-niche">Restaurant ID: dishoom · Confidence 91/100</div>
-              <div class="quick-actions"><button class="btn btn-outline btn-sm" onclick="quickTrade('dishoom','buy')">Buy</button><button class="btn btn-outline btn-sm" onclick="quickTrade('dishoom','sell')">Sell</button></div>
+            <div class="expert-info">
+              <div class="expert-name">Dishoom</div>
+              <div class="expert-niche">Restaurant ID: dishoom · Confidence 91/100</div>
+              <div class="quick-actions">
+                <button class="btn btn-outline btn-sm" onclick="quickTrade('dishoom','buy')">Buy</button>
+                <button class="btn btn-outline btn-sm" onclick="quickTrade('dishoom','sell')">Sell</button>
+              </div>
             </div>
-            <div class="expert-price"><div class="up">£120.00</div><div style="font-size:11px;" class="up">▲ 3.6%</div></div>
+            <div class="expert-price">
+              <div class="up">£120.00</div>
+              <div style="font-size:11px;" class="up">▲ 3.6%</div>
+            </div>
           </div>
+
           <div class="expert-row">
             <div class="expert-av" style="background:linear-gradient(135deg,#7b61ff22,#7b61ff44);color:var(--accent3);">PA</div>
-            <div class="expert-info"><div class="expert-name">Padella</div><div class="expert-niche">Restaurant ID: padella · Confidence 87/100</div>
-              <div class="quick-actions"><button class="btn btn-outline btn-sm" onclick="quickTrade('padella','buy')">Buy</button><button class="btn btn-outline btn-sm" onclick="quickTrade('padella','sell')">Sell</button></div>
+            <div class="expert-info">
+              <div class="expert-name">Padella</div>
+              <div class="expert-niche">Restaurant ID: padella · Confidence 87/100</div>
+              <div class="quick-actions">
+                <button class="btn btn-outline btn-sm" onclick="quickTrade('padella','buy')">Buy</button>
+                <button class="btn btn-outline btn-sm" onclick="quickTrade('padella','sell')">Sell</button>
+              </div>
             </div>
-            <div class="expert-price"><div class="up">£95.00</div><div style="font-size:11px;" class="up">▲ 1.9%</div></div>
+            <div class="expert-price">
+              <div class="up">£95.00</div>
+              <div style="font-size:11px;" class="up">▲ 1.9%</div>
+            </div>
           </div>
+
           <div class="expert-row">
             <div class="expert-av" style="background:linear-gradient(135deg,#ff4d6d22,#ff4d6d44);color:var(--accent2);">GY</div>
-            <div class="expert-info"><div class="expert-name">Gymkhana</div><div class="expert-niche">Restaurant ID: gymkhana · Confidence 93/100</div>
-              <div class="quick-actions"><button class="btn btn-outline btn-sm" onclick="quickTrade('gymkhana','buy')">Buy</button><button class="btn btn-outline btn-sm" onclick="quickTrade('gymkhana','sell')">Sell</button></div>
+            <div class="expert-info">
+              <div class="expert-name">Gymkhana</div>
+              <div class="expert-niche">Restaurant ID: gymkhana · Confidence 93/100</div>
+              <div class="quick-actions">
+                <button class="btn btn-outline btn-sm" onclick="quickTrade('gymkhana','buy')">Buy</button>
+                <button class="btn btn-outline btn-sm" onclick="quickTrade('gymkhana','sell')">Sell</button>
+              </div>
             </div>
-            <div class="expert-price"><div class="down">£142.00</div><div style="font-size:11px;" class="down">▼ 0.7%</div></div>
+            <div class="expert-price">
+              <div class="down">£142.00</div>
+              <div style="font-size:11px;" class="down">▼ 0.7%</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="navbar.js"></script>
 <script>
@@ -200,13 +364,18 @@ const marketData = {
 let chart;
 let currentMode = 'buy';
 let selectedRestaurantId = 'dishoom';
+let selectedExpert = null;
 
 function formatCurrency(v) {
-  return '£' + v.toFixed(2);
+  return '£' + Number(v).toFixed(2);
 }
 
 function getRestaurant(id) {
   return marketData.restaurants.find(r => r.id === id);
+}
+
+function isValidRestaurantId(id) {
+  return marketData.restaurants.some(r => r.id === id);
 }
 
 function getHolding(id) {
@@ -224,12 +393,104 @@ function setHolding(id, shares) {
   marketData.user.portfolio = marketData.user.portfolio.filter(p => p.shares > 0);
 }
 
+function getListingFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('listing');
+}
+
+function getExpertIdFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('expert');
+}
+
+function getExpertListingId(expert) {
+  if (expert && expert.listingId) return expert.listingId;
+
+  const nameMap = {
+    'Rajan Kumar': 'dishoom',
+    'Anika Sharma': 'gymkhana',
+    'Marco Ferraro': 'padella',
+    'Giulia Romano': 'padella',
+    'Yuki Tanaka': 'dishoom',
+    'Aiko Sato': 'dishoom',
+    'Claire Bennett': 'gymkhana',
+    'James Laurent': 'gymkhana',
+    'Maya Rahman': 'dishoom',
+    'Leo Carter': 'dishoom',
+    'Noah Park': 'dishoom',
+    'Sana Iqbal': 'gymkhana'
+  };
+
+  return nameMap[expert?.name] || 'dishoom';
+}
+
+async function loadSelectedExpert() {
+  const expertId = getExpertIdFromUrl();
+  const stored = localStorage.getItem('selectedExpert');
+  const lastSeenId = localStorage.getItem('lastSeenExpertId');
+
+  if (stored) {
+    const parsed = JSON.parse(stored);
+    if (!expertId || String(parsed.id) === String(expertId)) {
+      localStorage.setItem('lastSeenExpertId', String(parsed.id));
+      return parsed;
+    }
+  }
+
+  const response = await fetch('experts.json');
+  if (!response.ok) throw new Error('Failed to load experts');
+
+  const experts = await response.json();
+  if (!Array.isArray(experts)) throw new Error('Invalid expert data');
+
+  let found = null;
+
+  if (expertId) {
+    found = experts.find(expert => String(expert.id) === String(expertId));
+  }
+
+  if (!found && lastSeenId) {
+    found = experts.find(expert => String(expert.id) === String(lastSeenId));
+  }
+
+  if (!found) {
+    found = experts[0];
+  }
+
+  if (found) {
+    localStorage.setItem('selectedExpert', JSON.stringify(found));
+    localStorage.setItem('lastSeenExpertId', String(found.id));
+  }
+
+  return found;
+}
+
+function renderExpertHero(expert) {
+  if (!expert) return;
+
+  const initials = expert.initials || expert.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+  const tags = (expert.categories || []).concat((expert.tags || []).slice(0, 2));
+
+  document.getElementById('expertAvatar').textContent = initials;
+  document.getElementById('expertName').textContent = expert.name;
+  document.getElementById('expertBadge').textContent = expert.badge || 'Featured';
+  document.getElementById('expertMeta').textContent = expert.niche + ' · ' + expert.city;
+  document.getElementById('expertConfidence').textContent = (expert.confidence || 0) + '%';
+  document.getElementById('expertTracked').textContent = ((Number(expert.id || 1) * 87) + 300) + ' verdicts tracked';
+  document.getElementById('expertTagWrap').innerHTML = tags
+    .slice(0, 4)
+    .map(tag => '<span class="cred-pill">' + tag + '</span>')
+    .join('');
+}
+
 function buildChart(range) {
   const { labels, data } = datasets[range];
   const isUp = data[data.length - 1] >= data[0];
   const lineColor = isUp ? '#00e5a0' : '#ff4d6d';
   const fillColor = isUp ? 'rgba(0,229,160,0.08)' : 'rgba(255,77,109,0.08)';
+
   if (chart) chart.destroy();
+
   chart = new Chart(document.getElementById('stockChart'), {
     type: 'line',
     data: {
@@ -253,16 +514,29 @@ function buildChart(range) {
       plugins: {
         legend: { display: false },
         tooltip: {
-          backgroundColor: '#0d1120', borderColor: '#1e2540', borderWidth: 1,
-          titleColor: '#6b7280', bodyColor: '#e8eaf0',
-          callbacks: { label: ctx => '  MV ' + formatCurrency(ctx.parsed.y) }
+          backgroundColor: '#0d1120',
+          borderColor: '#1e2540',
+          borderWidth: 1,
+          titleColor: '#6b7280',
+          bodyColor: '#e8eaf0',
+          callbacks: {
+            label: ctx => '  MV ' + formatCurrency(ctx.parsed.y)
+          }
         }
       },
       scales: {
-        x: { grid: { color: 'rgba(30,37,64,0.6)' }, ticks: { color: '#6b7280', font: { size: 11, family: 'DM Mono' } } },
+        x: {
+          grid: { color: 'rgba(30,37,64,0.6)' },
+          ticks: { color: '#6b7280', font: { size: 11, family: 'DM Mono' } }
+        },
         y: {
-          position: 'right', grid: { color: 'rgba(30,37,64,0.6)' },
-          ticks: { color: '#6b7280', font: { size: 11, family: 'DM Mono' }, callback: v => '£' + v.toFixed(0) }
+          position: 'right',
+          grid: { color: 'rgba(30,37,64,0.6)' },
+          ticks: {
+            color: '#6b7280',
+            font: { size: 11, family: 'DM Mono' },
+            callback: v => '£' + Number(v).toFixed(0)
+          }
         }
       }
     }
@@ -284,24 +558,77 @@ function switchOrder(mode) {
 
 function updateHeader() {
   const restaurant = getRestaurant(selectedRestaurantId);
+  if (!restaurant) return;
+
   const isUp = restaurant.changePct >= 0;
   const sign = isUp ? '▲' : '▼';
   const deltaClass = isUp ? 'up' : 'down';
+  const poolValueMillions = ((restaurant.value * 20000) / 1000000).toFixed(2);
+
   document.getElementById('restaurantSlug').textContent = restaurant.name.toUpperCase() + ' · Restaurant ID ' + restaurant.id;
   document.getElementById('restaurantTitle').textContent = restaurant.name + ' Verdict Listing';
   document.getElementById('headerListingLabel').textContent = restaurant.name.toUpperCase() + ' · Listing Market Value';
   document.getElementById('livePrice').textContent = formatCurrency(restaurant.value);
-  document.getElementById('valueDelta').textContent = sign + ' ' + formatCurrency(Math.abs(restaurant.changeAbs)) + ' · ' + (isUp ? '+' : '') + restaurant.changePct.toFixed(2) + '%';
-  document.getElementById('valueDelta').classList.remove('up', 'down');
-  document.getElementById('valueDelta').classList.add(deltaClass);
-  document.getElementById('listingMeta').textContent = 'Confidence ' + restaurant.confidence + '/100 · Rating ' + restaurant.rating.toFixed(1) + '/5 · 24h Trades 3,218 units';
-  document.getElementById('selectedListingOut').textContent = 'Selected: ' + restaurant.name + ' (' + restaurant.id + ')';
-  document.getElementById('poolValue').textContent = formatCurrency(restaurant.value * 20000 / 1000) + 'K';
+
+  const deltaEl = document.getElementById('valueDelta');
+  deltaEl.textContent = sign + ' ' + formatCurrency(Math.abs(restaurant.changeAbs)) + ' · ' + (isUp ? '+' : '') + restaurant.changePct.toFixed(2) + '%';
+  deltaEl.classList.remove('up', 'down');
+  deltaEl.classList.add(deltaClass);
+
+  document.getElementById('listingMeta').textContent =
+    'Confidence ' + restaurant.confidence + '/100 · Rating ' + restaurant.rating.toFixed(1) + '/5 · 24h Trades 3,218 units';
+
+  document.getElementById('selectedListingOut').textContent =
+    'Selected: ' + restaurant.name + ' (' + restaurant.id + ')';
+
+  document.getElementById('poolValue').textContent = '£' + poolValueMillions + 'M';
+  document.getElementById('reviewYield').textContent = restaurant.rating.toFixed(1) + '/5';
+
+  const confidenceGain = '+' + Math.max(18, restaurant.confidence - 49) + ' pts';
+  const ratingMove = (restaurant.rating >= 4.7 ? '+0.6' : restaurant.rating >= 4.5 ? '+0.4' : '+0.3');
+  const traderCount = String(780 + Math.round(restaurant.value * 2.2));
+  const reviewCount = String(4800 + Math.round(restaurant.value * 17));
+
+  document.getElementById('allTimeConfidence').textContent = confidenceGain;
+  document.getElementById('ratingMove30d').textContent = ratingMove;
+  document.getElementById('activeTraders').textContent = traderCount;
+  document.getElementById('reviewYieldMeta').textContent = 'Weighted from ' + Number(reviewCount).toLocaleString() + ' reviews';
+
+  document.getElementById('metricConfidenceText').textContent = restaurant.confidence + '%';
+  document.getElementById('metricConfidenceBar').style.width = restaurant.confidence + '%';
+
+  const sentiment = Math.min(92, restaurant.confidence - 10 + Math.round(restaurant.rating * 2));
+  const engagement = Math.min(95, restaurant.confidence - 4 + Math.round(Math.abs(restaurant.changePct) * 2));
+  const riskWidth = restaurant.changePct < 0 ? 48 : restaurant.changePct > 3 ? 28 : 36;
+  const riskLabel = restaurant.changePct < 0 ? 'Medium' : 'Low';
+
+  document.getElementById('metricSentimentText').textContent = sentiment + '%';
+  document.getElementById('metricSentimentBar').style.width = sentiment + '%';
+
+  document.getElementById('metricEngagementText').textContent = engagement + '%';
+  document.getElementById('metricEngagementBar').style.width = engagement + '%';
+
+  document.getElementById('metricRiskText').textContent = riskLabel;
+  document.getElementById('metricRiskBar').style.width = riskWidth + '%';
+
+  const expertName = selectedExpert ? selectedExpert.name : 'This expert';
+  const riskStyle = selectedExpert ? String(selectedExpert.risk || 'Medium').toLowerCase() : 'medium';
+  document.getElementById('aiAnalysisText').textContent =
+    restaurant.name +
+    ' is showing ' +
+    (isUp ? 'positive' : 'mixed') +
+    ' momentum in market confidence. ' +
+    expertName +
+    '\'s coverage aligns with current category strength, while the listing retains a ' +
+    riskStyle +
+    '-risk profile for traders monitoring sentiment, consistency, and demand.';
 }
 
 function updateOrder() {
   const qty = parseInt(document.getElementById('buyQty').value, 10) || 0;
   const restaurant = getRestaurant(selectedRestaurantId);
+  if (!restaurant) return;
+
   const unitPrice = restaurant.value;
   const subtotal = qty * unitPrice;
   const fee = subtotal * 0.005;
@@ -314,12 +641,25 @@ function updateOrder() {
   document.getElementById('totalOut').textContent = formatCurrency(total);
   document.getElementById('totalLabel').textContent = totalLabel;
   document.getElementById('holdingOut').textContent = getHolding(selectedRestaurantId);
-  document.getElementById('orderBtn').textContent = actionWord + ' ' + qty + (qty === 1 ? ' Unit' : ' Units') + ' · ' + formatCurrency(total);
-  document.getElementById('orderBtn').style.background = currentMode === 'buy' ? 'var(--accent)' : 'var(--accent2)';
 
-  const projected = currentMode === 'buy' ? marketData.user.balance - total : marketData.user.balance + total;
-  document.getElementById('balanceLine').textContent = 'Balance: ' + formatCurrency(marketData.user.balance) + ' · After trade: ' + formatCurrency(Math.max(projected, 0));
-  document.getElementById('sidebarBalance').textContent = formatCurrency(marketData.user.balance);
+  document.getElementById('orderBtn').textContent =
+    actionWord + ' ' + qty + (qty === 1 ? ' Unit' : ' Units') + ' · ' + formatCurrency(total);
+
+  document.getElementById('orderBtn').style.background =
+    currentMode === 'buy' ? 'var(--accent)' : 'var(--accent2)';
+
+  const projected = currentMode === 'buy'
+    ? marketData.user.balance - total
+    : marketData.user.balance + total;
+
+  document.getElementById('balanceLine').textContent =
+    'Balance: ' + formatCurrency(marketData.user.balance) +
+    ' · After trade: ' + formatCurrency(Math.max(projected, 0));
+
+  const sidebarBalance = document.getElementById('sidebarBalance');
+  if (sidebarBalance) {
+    sidebarBalance.textContent = formatCurrency(marketData.user.balance);
+  }
 }
 
 function validateOrder(qty, total) {
@@ -332,11 +672,15 @@ function validateOrder(qty, total) {
 
 function placeOrder() {
   const qty = parseInt(document.getElementById('buyQty').value, 10) || 0;
-  const unitPrice = getRestaurant(selectedRestaurantId).value;
+  const restaurant = getRestaurant(selectedRestaurantId);
+  if (!restaurant) return;
+
+  const unitPrice = restaurant.value;
   const subtotal = qty * unitPrice;
   const fee = subtotal * 0.005;
   const total = currentMode === 'buy' ? subtotal + fee : Math.max(subtotal - fee, 0);
   const issue = validateOrder(qty, total);
+
   const btn = document.getElementById('orderBtn');
   const msg = document.getElementById('orderMsg');
 
@@ -347,6 +691,7 @@ function placeOrder() {
   }
 
   const holdings = getHolding(selectedRestaurantId);
+
   if (currentMode === 'buy') {
     marketData.user.balance -= total;
     setHolding(selectedRestaurantId, holdings + qty);
@@ -359,7 +704,16 @@ function placeOrder() {
   btn.textContent = '✓ Order Placed';
   btn.style.background = '#1a3d30';
   btn.style.color = 'var(--accent)';
-  msg.textContent = (currentMode === 'buy' ? 'Bought ' : 'Sold ') + qty + ' unit' + (qty === 1 ? '' : 's') + ' in ' + getRestaurant(selectedRestaurantId).name + '.';
+
+  msg.textContent =
+    (currentMode === 'buy' ? 'Bought ' : 'Sold ') +
+    qty +
+    ' unit' +
+    (qty === 1 ? '' : 's') +
+    ' in ' +
+    restaurant.name +
+    '.';
+
   msg.style.color = 'var(--accent)';
 
   setTimeout(() => {
@@ -371,6 +725,7 @@ function placeOrder() {
 }
 
 function quickTrade(restaurantId, mode) {
+  if (!isValidRestaurantId(restaurantId)) return;
   selectedRestaurantId = restaurantId;
   switchOrder(mode);
   updateHeader();
@@ -380,16 +735,49 @@ function quickTrade(restaurantId, mode) {
 
 (function initPage() {
   const navMap = {
-    landing: 0, dashboard: 1, profile: 2, stock: 3, category: 4,
-    review: 5, ai: 6, portfolio: 7, expert_application: 8, trust: 9
+    landing: 0,
+    dashboard: 1,
+    profile: 2,
+    stock: 3,
+    category: 4,
+    review: 5,
+    ai: 6,
+    portfolio: 7,
+    expert_application: 8,
+    trust: 9
   };
+
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.querySelectorAll('.nav-item')[navMap.stock]?.classList.add('active');
-})();
 
-buildChart('1D');
-updateHeader();
-updateOrder();
+  const listingFromUrl = getListingFromUrl();
+  if (listingFromUrl && isValidRestaurantId(listingFromUrl)) {
+    selectedRestaurantId = listingFromUrl;
+  }
+
+  loadSelectedExpert()
+    .then(expert => {
+      selectedExpert = expert;
+      renderExpertHero(expert);
+
+      if (!listingFromUrl) {
+        const mappedListing = getExpertListingId(expert);
+        if (mappedListing && isValidRestaurantId(mappedListing)) {
+          selectedRestaurantId = mappedListing;
+        }
+      }
+
+      updateHeader();
+      updateOrder();
+    })
+    .catch(error => {
+      console.error(error);
+      updateHeader();
+      updateOrder();
+    });
+
+  buildChart('1D');
+})();
 </script>
 </body>
 </html>
